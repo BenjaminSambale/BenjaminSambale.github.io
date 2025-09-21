@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>Photos</title>
+    <link rel="stylesheet" href="../style/main.css">
+    <script defer src="../scripts/photos.js"></script>
+</head>
+</head>
+
+<body class="subpage" id="galleryBody">
+
+    <p>Photos, I have taken with a Casio Exilim-ZR10 (unfortunately, they are no longer produced)</p>
+
+    <div class="gallery" id="gallery"></div>
+
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+        <button class="nav-btn" id="prevBtn" title="Previous" aria-label="previous">‹</button>
+        <img id="lightboxImg">
+        <button class="nav-btn" id="nextBtn" title="Next" aria-label="next">›</button>
+    </div>
+</body>
+
+</html>
