@@ -56,16 +56,16 @@ h1 {
   background-color: var(--nav-hover);
 }
 
-.subpage {
-  margin: 0;
-  padding: 0 16px 8px;
-}
-
 iframe {
   width: calc(100% - var(--nav-weight));
   margin-left: var(--nav-weight);
   height: calc(100dvh - 5px); /* prevents duplicated scrollbar */
   border: none;
+}
+
+.subpage {
+  margin: 0;
+  padding: 0 16px 8px;
 }
 
 /* Topbar navigation on creative writings */
