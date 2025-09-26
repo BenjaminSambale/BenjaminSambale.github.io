@@ -10,7 +10,7 @@
 /* Overwriting the default from user agent stylesheet */
 body {
   margin: 0;
-  font-family: "DejaVu Sans", "Noto Sans", sans-serif;
+  font-family: "DejaVu Sans", "Noto Sans", "Segoe UI", sans-serif;
 }
 
 p {
