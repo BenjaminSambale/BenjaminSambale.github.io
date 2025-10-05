@@ -101,20 +101,27 @@ iframe {
 }
 
 /* Creative writings */
+@font-face {
+  font-family: 'Domine';
+  src: url('../fonts/Domine-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+
 article {
+  font-family: Domine;
   margin-top: var(--nav-height);
   display: none;
   overflow: auto; /* prevent margin collapsing */
   padding: 0 32px 24px;
 }
 
-article h1 {
+/* article h1 {
   font-weight: normal;
-}
+} */
 
 article p {
   text-align: justify;
-  font-size: 1.1em;
+  font-size: 1.2em; 
 }
 
 .math {
