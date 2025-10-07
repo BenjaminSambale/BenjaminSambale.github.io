@@ -33,20 +33,20 @@ h1 {
   height: 100%;
   width: var(--nav-weight);
   position: fixed;
-  /* z-index: 1; */
   top: 0;
   left: 0;
   background-color: var(--nav-background);
   overflow-x: hidden;
-  padding-top: 8px;
 }
 
 .sidenav a {
-  padding: 4px 8px 4px 16px; /* top-right-bottom-left*/
+  padding: 0px 8px 0px 16px; /* top-right-bottom-left*/
+  display: flex;
+  align-items: center; 
   text-decoration: none;
+  height: 40px;
   font-size: 20px;
   color: black;
-  display: block;
 }
 
 .sidenav a:hover {
