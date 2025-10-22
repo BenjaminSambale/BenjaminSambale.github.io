@@ -21,6 +21,10 @@ h1 {
   text-align: center;
 }
 
+.annoying {
+  color: red;
+}
+
 .startPage {
   display: flex; 
   align-items: flex-start; 
