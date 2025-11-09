@@ -1,0 +1,278 @@
+:root {
+  --gap: 2px;
+  --center-background: hsl(45, 100%, 50%);
+    /* 180 = cyan = blue-green */
+  --nav-background: hsl(185, 30%, 90%); /* hue, saturation, brightness */
+  --nav-hover: hsl(185, 30%, 70%);
+  --dialog-background: white;
+  --dialog-shadow: rgba(0, 0, 0, 0.4);
+  --modal-backdrop: rgba(0, 0, 0, 0.5);
+  --button-color: var(--nav-background);
+  --border-color: black;
+  --solution-color: hsl(120, 100%, 30%);
+  --panel-size: 300px;
+}
+
+/* Overwriting the default from user agent stylesheet */
+body {
+  margin: 0;
+  font-family: "DejaVu Sans", "Noto Sans", "Segoe UI", sans-serif;
+  overflow: hidden;
+}
+
+button {
+  font-family: "DejaVu Sans", "Noto Sans", "Segoe UI", sans-serif;
+  cursor: pointer;
+  background-color: var(--button-color);
+}
+
+h1, h2, h3 {
+  text-align: center;
+}
+
+#fullPage {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 100vh;
+  background: radial-gradient(circle,var(--center-background) 0%, var(--nav-background) 60%);
+}
+
+#groupSelect {
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+  width: 280px;
+  flex-direction: column;
+  align-items: center;
+}
+
+#groupSelect b {
+  width: 100%;
+  text-align: center;
+  border-top: solid 2px var(--border-color);
+  border-bottom: solid 2px var(--border-color);
+  margin-bottom: 4px;
+}
+
+#groupSelect div {
+  display: flex; 
+  width: 100%;
+  gap: 10px;
+  justify-content: space-between;
+  padding-bottom: 20px;
+}
+
+#groupSelect p {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  cursor: pointer; 
+}
+
+.active {
+  background-color: var(--nav-hover);
+}
+
+#groupSelect p:hover {
+  background-color: var(--nav-hover);
+}
+
+#patternGrid {
+  display: flex;
+  flex-direction: row;
+  align-items: space-around;
+  gap: 10px;
+}
+
+#patternSelect {
+  margin-top: 150px;
+}
+
+#patternSelect div {
+  margin-bottom: 8px;
+}
+
+#patternSelect label {
+  margin-left: 4px;
+}
+
+#playButtons {
+  display: flex;
+  justify-content: space-around;
+  padding-bottom: 20px;
+}
+
+#playButtons button {
+  font-size: 13pt;
+  margin-top: 10px;
+  width: 100px;
+  height: 40px;
+}
+
+#playArea {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: calc(300px + var(--gap)*2);
+  height: calc(300px + var(--gap)*2);
+  gap: var(--gap);
+  background-color: var(--border-color);
+  border: solid 4px var(--border-color)
+}
+.tile {
+  background-size: 300% 300%;
+}
+
+#actionButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+#actionButtons input {
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+}
+
+#actionButtons input:hover {
+    filter: brightness(0.9);
+}
+
+.dialog {
+  background-color: var(--dialog-background);
+  padding: 0 20px 20px 20px;
+  box-shadow: 10px 10px 5px var(--dialog-shadow);
+}
+
+dialog::backdrop {
+  background-color: var(--modal-backdrop); 
+  backdrop-filter: blur(2px);
+}
+
+.inputFields {
+  font-size: 16px;
+}
+
+.errorText {
+  color: red;
+  font-size: 12px;
+  display: none;
+  padding-top: 4px;
+}
+
+#comboInput {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#permInputs {
+  width: 100%;
+  justify-content: space-between;
+  display: flex;
+}
+
+.dialogButtons {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding-top: 20px;
+}
+
+.singleButton {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.dialog button {
+  width: 80px;
+  height: 30px;
+  font-size: 16px;
+}
+
+#infoPanel {
+  width: 500px;
+  overflow: auto;
+}
+
+#statusArea {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  padding-left: 10px;
+}
+
+#statusArea p {
+  margin-top: -8px;
+  line-height: 1.8;
+}
+
+#solution {
+  color: var(--solution-color);
+}
+
+.winning {
+  color: var(--solution-color);
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.accordion {
+  padding: 8px;
+  width: 100%;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  border-top: 2px solid var(--border-color);
+  background-color: transparent;
+}
+.accordion:last-of-type {
+  border-bottom: 2px solid var(--border-color);
+}
+.accordion:hover {
+  background-color: var(--nav-hover)
+}
+.accordion:before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  float: left;
+  margin-right: 5px;
+  background: url('buttons/chevron-down.svg');
+}
+.active:before {
+  background: url('buttons/chevron-up.svg');
+}
+
+/* #gtText {
+  line-height: 150%; 
+  margin: 4px 0;
+} */
+
+.panel {
+  padding: 0 8px;
+  display: none;
+}
+.panel:last-child {
+  border-top: none;
+}
+.panel p {
+  margin: 4px 0;
+  line-height: 150%; /* more space for formulas */
+}
+.panel ul {
+  margin: 4px 8px;
+  padding-left: 10px;
+}
+.panel li {
+  margin: 0;
+  line-height: 150%;
+}
+
+.open {
+  display: block;
+  border-top: 2px solid var(--border-color);
+}

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>The Cole puzzle</title>
+    <link rel="stylesheet" href="cole.css">
+    <link rel="stylesheet" href="../katex/katex.min.css">
+    <script defer src="../katex/katex.min.js"></script>
+    <script defer src="../katex/auto-render.min.js"></script>
+    <script defer src="../scripts/renderKatex.js"></script>
+    <script defer src="groupData-min.js"></script>
+    <script defer src="gtTexts.js"></script>
+    <script defer src="cole.js"></script>
+</head>
+
+<body>
+    <div id="fullPage">
+        <div id="groupSelect">
+            <h3>Permutation group</h3>
+            <b>imprimitive</b>
+            <div>
+                <section>
+                    <em>intransitive</em>
+                    <p id="0" class="active">\(D_8\)</p>
+                    <p id="1">\(Q_8\)</p>
+                    <!-- <p id="20">\(\mathrm{A\Gamma L}(1, 8)\)</p>
+                    <p id="21">\(\mathrm{AGL}(3, 2)\)</p> -->
+                    <p id="2">\(\mathrm{PSL}(2, 7)\)</p>
+                    <p id="3">\(\mathrm{PGL}(2, 7)\)</p>
+                </section>
+                <section>
+                    <em>transitive</em>
+                    <p id="4">\(C_3\times C_3\)</p>
+                    <p id="5">\(S_3\times S_3\)</p>
+                    <p id="6">\(C_3\wr C_3\)</p>
+                    <p id="7">\(S_3\wr S_3\)</p>
+                </section>
+            </div>
+            <b>primitive</b>
+            <div>
+                <section>
+                    <em>affine</em>
+                    <p id="8">\(\mathrm{AGL}(1,9)\)</p>
+                    <p id="9">\(\mathrm{A\Gamma L}(1,9)\)</p>
+                    <p id="10">\(M_9\)</p>
+                    <p id="11">\(\mathrm{ASL}(2,3)\)</p>
+                    <p id="12">\(\mathrm{AGL}(2,3)\)</p>
+                </section>
+                <section>
+                    <em>almost simple</em>
+                    <p id="13">\(\mathrm{SL}(2,8)\)</p>
+                    <p id="14">\(\mathrm{\Sigma L}(2,8)\)</p>
+                    <p id="15">\(A_9\)</p>
+                    <p id="16">\(S_9\)</p>
+                </section>
+            </div>
+            <b>special</b>
+            <div>
+                <section>
+                    <p id="17">\(C_2^8\rtimes S_9\)</p>
+                    <p id="18">\(C_2\wr S_9\)</p>
+                    <p id="19">\(D_8\wr S_9\)</p>
+                </section>
+                <section>
+                    <p id="20">random</p>
+                    <p id="21">custom…</p>
+                </section>
+            </div>
+        </div>
+
+        <div id="patternGrid">
+            <div id="patternSelect">
+                <fieldset>
+                    <legend>Pattern</legend>
+
+                    <div>
+                        <input type="radio" id="squares" name="pattern" value="patterns/squares.png" checked />
+                        <label>squares</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="keypad" name="pattern" value="patterns/numbers.png">
+                        <label>keypad</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="tower" name="pattern" value="patterns/tower.png">
+                        <label>Tower bridge</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="pattern" value="patterns/atomium.png">
+                        <label>Atomium</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="pattern" value="patterns/butterfly.jpg">
+                        <label>Butterfly</label>
+                    </div>
+                </fieldset>
+
+            </div>
+            <div>
+                <h1>The Cole puzzle</h1>
+                <div id="playButtons">
+                    <button id="btnScramble">Scramble</button>
+                    <button id="btnRestore">Restore</button>
+                    <button id="btnSolve">Solution</button>
+                </div>
+
+                <div id="playArea">
+                    <!-- filled in cole.js -->
+                </div>
+
+                <div id="actionButtons">
+                    <input id="btnLeft" type="image" src="buttons/b-01.png" />
+                    <input id="btnMiddle" type="image" src="buttons/joker.png" />
+                    <input id="btnRight" type="image" src="buttons/b-02.png" />
+                </div>
+
+                <dialog id="comboDialog" class="dialog">
+                    <form>
+                        <h3>Enter a sequence of moves (see instructions)</h3>
+                        <input type="text" class="inputFields" id="comboInput"
+                            placeholder="Move sequence, e.g. LLRL'R" />
+                        <label class="errorText" id="comboValidation">invalid sequence</label>
+                        <div class="dialogButtons">
+                            <button type="button" id="cancelComboSubmit">Cancel</button>
+                            <button type="button" id="submitCombo">Submit</button>
+                        </div>
+                    </form>
+                </dialog>
+
+                <dialog id="customDialog" class="dialog">
+                    <form>
+                        <h3>Enter permutations for the left and right button</h3>
+                        <div id="permInputs">
+                            <div>
+                                <input type="text" class="inputFields" id="leftInput"
+                                    placeholder="Left button, e.g. 213456789" />
+                                <label class="errorText" id="leftValidation">invalid permutation</label>
+                            </div>
+                            <div>
+                                <input type="text" class="inputFields" id="rightInput"
+                                    placeholder="Right button, e.g. 234567891" />
+                                <label class="errorText" id="rightValidation">invalid permutation</label>
+                            </div>
+                        </div>
+                        <div class="dialogButtons">
+                            <button type="button" id="cancelPermSubmit">Cancel</button>
+                            <button type="button" id="submitPerms">Submit</button>
+                        </div>
+                    </form>
+                </dialog>
+
+                <dialog id="warningDialog" class="dialog">
+                    <form method="dialog">
+                        <p id="warningMessage"></p>
+                        <div class="singleButton">
+                            <button>Close</button>
+                        </div>
+                    </form>
+                </dialog>
+            </div>
+        </div>
+
+        <div id="infoPanel">
+            <div>
+                <h3>Status</h3>
+                <div id="statusArea">
+                    <p>Moves: <span id="moveCount">0</span></p>
+                    <p>Solution: <span id="solution"></span></p>
+                </div>
+            </div>
+            <button class="accordion active">Group theory</button>
+            <div class="panel open">
+                <p id="gtText"></p>
+                <!-- defined in gtTexts.js -->
+            </div>
+
+            <button class="accordion">Instructions</button>
+            <div class="panel">
+                <ul>
+                    <li>The goal of this puzzle is to unscramble the \(3\times 3\) boxes by applying a sequence of
+                        permutations. First, pick a permutation group on the left-hand panel. Theoretical information on
+                        the
+                        selected group is given above. The bigger the group, the harder the challenge.
+                    </li>
+                    <li>The buttons
+                        underneath the grid perform fixed permutations as indicated by their icon. Clicking with the
+                        right
+                        mouse button performs the inverse permutation (i.e. undoes the left button click).
+                    </li>
+                    <li>
+                        The middle button
+                        under the grid can be defined as a combination of the left and right buttons. To set this up,
+                        right-click on the middle button and enter a sequence of L, L', R and R' without spaces or
+                        commas.
+                        Here, L and R denote the left and right buttons, and L' and R' denote the respective inverse
+                        actions.
+                    </li>
+                    <li>
+                        For convenience, the buttons can also be executed on the keyboard (left, up and right
+                        arrow keys; combine with ctrl for the inverses).</li>
+                    <li>Once you're familiar with the controls, press <em>Scramble</em> and try to solve the puzzle in
+                        as few
+                        moves as possible. If desperate, press <em>Solution</em> to uncover a solving sequence. This
+                        feature
+                        is not available for the larger groups.</li>
+                    <li>In the custom mode, you're asked to define your own buttons as permutations on \(1,\ldots,9\),
+                        arranged like a keypad. Enter any arrangement of these numbers without spaces or commas.
+                    </li>
+                </ul>
+            </div>
+            <button class="accordion">About</button>
+            <div class="panel">
+                <p>The game is named after <a href="https://mathshistory.st-andrews.ac.uk/Biographies/Cole/"
+                        target="_blank">Frank
+                        Nelson Cole</a>, who <a
+                        href="https://projecteuclid.org/journals/bulletin-of-the-new-york-mathematical-society/volume-2/issue-10/The-transitive-substitution-groups-of-nine-letters/bams/1183407630.full"
+                        target="_blank">classified</a>
+                    all 34 transitive permutation groups of degree 9 in 1893. It was written
+                    in HTML/CSS/JS by <a href="https://benjaminsambale.github.io/" target="_blank">Benjamin Sambale</a>.
+                    The solutions are computed with <a href="https://www.gap-system.org"
+                        target="_blank">GAP</a>, the mathematics is rendered with <a href="https://katex.org/"
+                        target="_blank">Katex</a>, and the images were created with <a href="https://tikz.dev/"
+                        target="_blank">TikZ</a>.</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
