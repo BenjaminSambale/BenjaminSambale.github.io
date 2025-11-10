@@ -135,6 +135,13 @@ submitPerms.addEventListener('click', () => {
     initialize();
 });
 
+customDialog.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    submitPerms.click();
+  }
+});
+
 btnScramble.addEventListener("click", () => {
     initialize();
     if (!gens[group][0]) { return; } // if custom mode was aborted
@@ -241,6 +248,13 @@ submitCombo.addEventListener('click', () => {
     // undo the final permutation on newRot
     newRot = startPerm.map(i => newRot[newPerm.indexOf(i)]);
     gens[group][2] = newPerm.concat(newRot);
+});
+
+comboDialog.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    submitCombo.click();
+  }
 });
 
 cancelComboSubmit.addEventListener('click', () => {
