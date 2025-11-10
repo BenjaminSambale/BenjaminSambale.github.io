@@ -79,6 +79,7 @@ renderGrid();
 document.querySelectorAll('#groupSelect p').forEach(p => {
     p.addEventListener('click', () => {
         group = p.id;
+        group != groups.D8wrS9 && (gens[group][2] = undefined); // reset combo move
         document.querySelectorAll('#groupSelect p').forEach(n => n.classList.remove('active'))
         p.classList.add('active');
         btnLeft.src = `buttons/b-${String(group * 2 + 1).padStart(2, '0')}.png`;
@@ -141,24 +142,13 @@ btnScramble.addEventListener("click", () => {
         const noBtn = group == groups.D8wrS9 ? 3 : 2;
         for (const _ of Array(30)) { // perform 30 random button clicks           
             const move = gens[group][randInt(noBtn)];
-            perm = move.slice(0, 9).map(i => perm[i]);
-            if (move[9]) {
-                if (move[9] < 0) {
-                    reflections[4] = 1 - reflections[4]; // middle button for D8wrS9
-                }
-                else {
-                    rotate(move);
-                }
-            }
-            rotations = move.slice(0, 9).map(i => rotations[i]);
-            reflections = move.slice(0, 9).map(i => reflections[i]);
+            [perm, rotations, reflections] = performMove(move);
         }
     }
     else {
         const r = randInt(orders[group])
         perm = elements[group][r][0]
     }
-    console.log(rotations);
     gameStarted = true;
     renderGrid();
 });
@@ -186,10 +176,7 @@ document.querySelectorAll('input[name="pattern"]').forEach(radio => {
             customDialog.showModal();
             return;
         }
-        perm = move.slice(0, 9).map(i => perm[i]);
-        rotate(move);
-        rotations = move.slice(0, 9).map(i => rotations[i]);
-        reflections = move.slice(0, 9).map(i => reflections[i]);
+        [perm, rotations, reflections] = performMove(move);
         processStep()
     });
     btn.addEventListener("contextmenu", (event) => { // right button click
@@ -206,14 +193,11 @@ btnMiddle.addEventListener("click", () => {
         const move = gens[group][2];
         if (!move) {
             warningMessage.textContent = defineButtonMessage;
-            warningDialog.classList.remove('winning');
+            warningDialog.classList.remove('winning'); // remove green font with winning message was last
             warningDialog.showModal();
             return;
         }
-        perm = move.slice(0, 9).map(i => perm[i]);
-        rotate(move);
-        rotations = move.slice(0, 9).map(i => rotations[i]);
-        reflections = move.slice(0, 9).map(i => reflections[i]);
+        [perm, rotations, reflections] = performMove(move);
     }
     processStep();
 });
@@ -236,32 +220,27 @@ submitCombo.addEventListener('click', () => {
         return;
     }
     comboDialog.close();
-    newMove = startPerm.slice();
-    moveM.match(/L'|L|R'|R/g)?.forEach(c => {
-        let move;
+    let newPerm = startPerm.slice();
+    let newRot = initialArray.slice();
+    matches.forEach(c => {
         switch (c) {
             case 'L':
-                move = gens[group][0];
-                newMove = move.slice(0, 9).map(i => newMove[i]);
-                rotate(move); // reflections do not matter in this mode
+                // reflections do not matter in this mode
+                [newPerm, newRot, _] = performMove(gens[group][0], false, newPerm, newRot); 
                 break;
             case "L'":
-                move = gens[group][0];
-                rotate(move);
-                newMove = startPerm.map(i => newMove[move.indexOf(i)]);
+                [newPerm, newRot, _] = performMove(gens[group][0], true, newPerm, newRot);
                 break;
             case 'R':
-                move = gens[group][1];
-                newMove = move.slice(0, 9).map(i => newMove[i]);
-                rotate(move);
+                [newPerm, newRot, _] = performMove(gens[group][1], false, newPerm, newRot);
                 break;
             case "R'":
-                move = gens[group][1];
-                rotate(move);
-                newMove = startPerm.map(i => newMove[move.indexOf(i)]);
+                [newPerm, newRot, _] = performMove(gens[group][1], true, newPerm, newRot);
         }
     });
-    gens[group][2] = newMove;
+    // undo the final permutation on newRot
+    newRot = startPerm.map(i => newRot[newPerm.indexOf(i)]);
+    gens[group][2] = newPerm.concat(newRot);
 });
 
 cancelComboSubmit.addEventListener('click', () => {
@@ -273,6 +252,8 @@ cancelPermSubmit.addEventListener('click', () => {
 });
 
 document.addEventListener('keydown', (e) => {
+    // prevent interfering with open dialogs
+    if (customDialog.open || comboDialog.open || warningDialog.open) { return; }
     switch (e.key) {
         case 'ArrowLeft':
             e.ctrlKey ? rightClickButton(0) : btnLeft.click();
@@ -311,7 +292,6 @@ function initialize() {
     perm = startPerm.slice();
     rotations = initialArray.slice();
     reflections = initialArray.slice();
-    group != groups.D8wrS9 && (gens[group][2] = undefined); // reset combo move
     gameStarted = false;
     renderGrid();
 }
@@ -322,30 +302,62 @@ function initialize() {
 function renderGrid() {
     const pattern = document.querySelector('input[name="pattern"]:checked').value;
     playArea.innerHTML = "";
-    for (const i of perm) {
-        const x = (i % 3) * 50;
-        const y = Math.floor(i / 3) * 50;
+    perm.forEach((p, i) => {
+        const x = (p % 3) * 50;
+        const y = Math.floor(p / 3) * 50;
         const tile = document.createElement("div");
         tile.className = "tile";
         tile.style.backgroundImage = `url(${pattern})`;
         tile.style.backgroundPosition = `${x}% ${y}%`;
-        tile.style.transform = `rotate(${rotations[perm.indexOf(i)] * 90}deg)`;
-        tile.style.transform += reflections[perm.indexOf(i)] ? ' scaleX(-1)' : '';
+        tile.style.transform = `rotate(${rotations[i] * 90}deg)`;
+        tile.style.transform += reflections[i] ? ' scaleX(-1)' : '';
         playArea.appendChild(tile);
-    }
+    });
     moveCounter.textContent = `${moveCount}`
     showSolution.textContent = solution === "solved" ? alreadySolvedMessage : `\\(${solution}\\)`;
     renderMathInElement(showSolution);
 }
 
 /**
- * Performs the rotation updates for a given move.
- * @param {Array<number>} move 
+ * Apply a move or its inverse to a given permutation, rotation and reflection map.
+ * @param {Array<number>} move The move to perform.
+ * @param {boolean} inverse Whether to apply the inverse of the move.
+ * @param {Array<number>} basePerm The base permutation map. Defaults to the current perm.
+ * @param {Array<number>} baseRot The base rotation map. Defaults to the current rotations.
+ * @param {Array<number>} baseRef The base reflection map. Defaults to the current reflections.
+ * @returns {Array<Array<number>>} The new permutation, rotation and reflection maps.
  */
-function rotate(move) {
-    for (let i = 0; i < move.length - 9; i++) {
-        rotations[i] = (rotations[i] + move[i + 9]) % 4;
+function performMove(move, inverse = false, basePerm = perm, baseRot = rotations, baseRef = reflections) {
+    let newPerm = basePerm.slice();
+    let newRot = baseRot.slice();
+    let newRef = baseRef.slice();
+    if (!inverse) {
+        if (move[9] == -1) {
+            newRef[4] = 1 - baseRef[4];
+        }
+        else {
+            for (let i = 0; i < move.length - 9; i++) {
+                newRot[i] = (newRot[i] + move[i + 9]) % 4;
+            }
+        }
+        newPerm = move.slice(0, 9).map(i => newPerm[i]);
+        newRot = move.slice(0, 9).map(i => newRot[i]);
+        newRef = move.slice(0, 9).map(i => newRef[i]);
     }
+    else {
+        newPerm = startPerm.map(i => newPerm[move.indexOf(i)]);
+        newRot = startPerm.map(i => newRot[move.indexOf(i)]);
+        newRef = startPerm.map(i => newRef[move.indexOf(i)]);
+        if (move[9] == -1) {
+            newRef[4] = 1 - newRef[4];
+        }
+        else {
+            for (let i = 0; i < move.length - 9; i++) {
+                newRot[i] = (4 + newRot[i] - move[i + 9]) % 4; // add 4 to avoid negative numbers
+            }
+        }
+    }
+    return [newPerm, newRot, newRef];
 }
 
 /**
@@ -372,10 +384,7 @@ function rightClickButton(index) {
         customDialog.showModal();
         return;
     }
-    perm = startPerm.map(i => perm[move.indexOf(i)]); // inverse permutation
-    rotations = startPerm.map(i => rotations[move.indexOf(i)]);
-    reflections = startPerm.map(i => reflections[move.indexOf(i)]);
-    rotate(move.map(x => -x));
+    [perm, rotations, reflections] = performMove(move,true);
     processStep();
 };
 
@@ -411,8 +420,8 @@ function shuffle() {
 
 /**
  * Generates a random integer in the range [0, max - 1].
- * @param {number} max 
- * @returns {number}
+ * @param {number} max upper bound (exclusive)
+ * @returns {number} A random integer between 0 and max - 1.
  */
 function randInt(max) { 
     return Math.floor(Math.random() * max);
