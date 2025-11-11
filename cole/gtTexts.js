@@ -3,7 +3,7 @@ const texts = [
 
     "The quaternion group \\(Q_8\\) of order 8 acts regularly on the eight outer boxes, i.e. every non-trivial element is fixed-point-free. In fact, \\(Q_8\\) cannot be represented as a permutation group of smaller degree, i.e. <em>Cayley's theorem</em> is best possible. This group is an ingredient for \\(M_9\\) further down the list. God's number is 2.",
 
-    "The projective special linear group \\(\\mathrm{PSL}(2,7)\\) acts faithfully and 2-transitively on the set of the eight 1-dimensional subspaces of \\(\\mathbb{F}_7^2\\) by matrix-vector-multiplication. It is the unique simple group of order 168. In particular, it is isomorphic to \\(\\mathrm{GL}(3,2)\\). God's number is 9.",
+    "The projective special linear group \\(\\mathrm{PSL}(2,7)\\) acts faithfully and 2-transitively on the eight 1-dimensional subspaces of \\(\\mathbb{F}_7^2\\) by matrix-vector-multiplication. It is the unique simple group of order 168. In particular, \\(\\mathrm{PSL}(2,7)\\cong\\mathrm{GL}(3,2)\\). God's number is 9.",
 
     "The projective general linear group \\(\\mathrm{PGL}(2,7)\\) of order 336 is an extension of \\(\\mathrm{PSL}(2,7)\\). God's number is 12. There are of course many other interesting permutation groups of degree 8, like \\(\\mathrm{AGL}(1,8)\\) or \\(\\mathrm{A\\Gamma L}(1,8)\\), but our focus is on the groups of degree 9.",
 
@@ -25,7 +25,7 @@ const texts = [
 
     "The group \\(\\mathrm{AGL}(2,3)\\cong C_3^2\\rtimes\\mathrm{GL}(2,3)\\) of order 432 is the universal solvable primitive group of degree 9 in the sense that every solvable primitive group embeds into \\(\\mathrm{AGL}(2,3).\\) God's number is 10.",
 
-    "The simple group \\(\\mathrm{SL}(2,8)\\) of order 504 acts sharply 3-transitively on the set of the nine 1-dimensional subspaces of \\(\\mathbb{F}_3^2\\) by matrix-vector-multiplication. Every non-trivial element fixes at most two boxes. God's number is 12.",
+    "The simple group \\(\\mathrm{SL}(2,8)\\) of order 504 acts sharply 3-transitively on the nine 1-dimensional subspaces of \\(\\mathbb{F}_3^2\\) by matrix-vector-multiplication. Every non-trivial element fixes at most two boxes. God's number is 12.",
 
     "The special semilinear group \\(\\mathrm{\\Sigma L}(2,8)\\) of order 1512 is an extension of \\(\\mathrm{SL}(2,8)\\) by Frobenius automorphisms \\(\\mathrm{Aut}(\\mathbb{F}_8)\\cong C_3\\). God's number is 20 (just as for the Rubik's cube).",
 

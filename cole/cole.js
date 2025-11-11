@@ -41,6 +41,13 @@ let solution = '';
  */
 let group = groups.start;
 
+/**
+ * Stores a valid user inputs to avoid saving an invalid string in the dialog.
+ */
+let comboInputString = '';
+let leftInputString = '';
+let rightInputString = '';
+
 /* HTML elements */
 const playArea = document.getElementById("playArea");
 const groupSelect = document.getElementById("groupSelect");
@@ -130,6 +137,8 @@ submitPerms.addEventListener('click', () => {
         return;
     }
     customDialog.close();
+    leftInputString = leftInput.value;
+    rightInputString = rightInput.value;
     gens[group][0] = moveL.slice();
     gens[group][1] = moveR.slice();
     initialize();
@@ -153,8 +162,8 @@ btnScramble.addEventListener("click", () => {
         }
     }
     else {
-        const r = randInt(orders[group])
-        perm = elements[group][r][0]
+        const r = randInt(elements[group].length);
+        perm = elements[group][r][0];
     }
     gameStarted = true;
     renderGrid();
@@ -227,6 +236,7 @@ submitCombo.addEventListener('click', () => {
         return;
     }
     comboDialog.close();
+    comboInputString = comboInput.value;
     let newPerm = startPerm.slice();
     let newRot = initialArray.slice();
     matches.forEach(c => {
@@ -258,10 +268,16 @@ comboDialog.addEventListener('keydown', e => {
 });
 
 cancelComboSubmit.addEventListener('click', () => {
+    comboInput.value = comboInputString;
+    comboValidation.style.display = 'none';
     comboDialog.close();
 });
 
 cancelPermSubmit.addEventListener('click', () => {
+    leftInput.value = leftInputString;
+    rightInput.value = rightInputString;
+    leftValidation.style.display = 'none';
+    rightValidation.style.display = 'none';
     customDialog.close();
 });
 
