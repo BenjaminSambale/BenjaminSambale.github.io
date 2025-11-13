@@ -209,7 +209,7 @@ btnMiddle.addEventListener("click", () => {
         const move = gens[group][2];
         if (!move) {
             warningMessage.textContent = defineButtonMessage;
-            warningDialog.classList.remove('winning'); // remove green font with winning message was last
+            warningMessage.classList.remove('winning'); // remove green font with winning message was last
             warningDialog.showModal();
             return;
         }
