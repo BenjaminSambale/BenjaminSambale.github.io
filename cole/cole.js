@@ -145,10 +145,10 @@ submitPerms.addEventListener('click', () => {
 });
 
 customDialog.addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    submitPerms.click();
-  }
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        submitPerms.click();
+    }
 });
 
 btnScramble.addEventListener("click", () => {
@@ -243,7 +243,7 @@ submitCombo.addEventListener('click', () => {
         switch (c) {
             case 'L':
                 // reflections do not matter in this mode
-                [newPerm, newRot, _] = performMove(gens[group][0], false, newPerm, newRot); 
+                [newPerm, newRot, _] = performMove(gens[group][0], false, newPerm, newRot);
                 break;
             case "L'":
                 [newPerm, newRot, _] = performMove(gens[group][0], true, newPerm, newRot);
@@ -261,10 +261,10 @@ submitCombo.addEventListener('click', () => {
 });
 
 comboDialog.addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    submitCombo.click();
-  }
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        submitCombo.click();
+    }
 });
 
 cancelComboSubmit.addEventListener('click', () => {
@@ -406,15 +406,16 @@ function rightClickButton(index) {
         }
         else {
             reflections[4] = 1 - reflections[4];
+            processStep();
         }
         return;
     }
     const move = gens[group][index];
     if (!move) {
-        customDialog.showModal();
-        return;
-    }
-    [perm, rotations, reflections] = performMove(move,true);
+            customDialog.showModal();
+            return;
+        }
+    [perm, rotations, reflections] = performMove(move, true);
     processStep();
 };
 
@@ -453,6 +454,6 @@ function shuffle() {
  * @param {number} max upper bound (exclusive)
  * @returns {number} A random integer between 0 and max - 1.
  */
-function randInt(max) { 
+function randInt(max) {
     return Math.floor(Math.random() * max);
 }
