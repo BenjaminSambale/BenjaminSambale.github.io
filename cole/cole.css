@@ -200,6 +200,7 @@ dialog::backdrop {
 #infoPanel {
   width: 500px;
   overflow: auto;
+  margin-bottom: 20px;
 }
 
 #statusArea {
