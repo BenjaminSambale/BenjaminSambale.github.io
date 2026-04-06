@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for img in *.jpg; do
+for img in mondello.jpg; do
     thumb="thumbs/$img"
     read width height < <(magick identify -format "%w %h" "$img")
 
