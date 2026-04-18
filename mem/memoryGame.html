@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Number Memory</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 24px;
+            color: #4a4a7a;
+        }
+        .settings {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .settings label { font-size: 1rem; color: #555; }
+        .settings input[type="number"] {
+            width: 70px;
+            font-size: 1.1rem;
+            padding: 6px 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .mode-tabs {
+            display: flex;
+            gap: 0;
+        }
+        .mode-tabs button {
+            padding: 8px 24px;
+            font-size: 0.95rem;
+            border: 2px solid #ddd;
+            background: #f8f9ff;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .mode-tabs button:first-child { border-radius: 8px 0 0 8px; }
+        .mode-tabs button:last-child { border-radius: 0 8px 8px 0; }
+        .mode-tabs button.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: #667eea;
+        }
+        .display-area {
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9ff;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            padding: 16px;
+        }
+        .number { font-family: 'Courier New', monospace; color: #333; line-height: 1.6; }
+        #comparison { font-family: 'Courier New', monospace; letter-spacing: 2px; line-height: 1.6; }
+        #userInput {
+            width: 100%;
+            font-size: 1.4rem;
+            padding: 12px 16px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            outline: none;
+            transition: border-color 0.2s;
+            display: none;
+            margin-bottom: 20px;
+        }
+        #userInput:focus { border-color: #667eea; }
+        #actionButton {
+            font-size: 1.3rem;
+            padding: 12px 40px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        #actionButton:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5); }
+        #actionButton:active { transform: translateY(0); }
+        #result {
+            font-size: 1.2rem;
+            margin-top: 16px;
+            min-height: 1.5em;
+            font-weight: 600;
+        }
+        .correct { color: #28a745; }
+        .wrong { color: #dc3545; font-weight: bold; }
+        #timer { font-size: 0.85rem; color: #aaa; margin-top: 8px; min-height: 1.2em; }
+        hr { border: none; border-top: 1px solid #eee; margin: 28px 0; }
+        #highscores { text-align: center; }
+        #highscores h3 { font-size: 1.2rem; color: #4a4a7a; margin-bottom: 12px; }
+        #highscores table { width: 100%; border-collapse: collapse; }
+        #highscores th, #highscores td { padding: 8px 12px; font-size: 0.9rem; border-bottom: 1px solid #eee; }
+        #highscores th { background: #f8f9ff; color: #555; font-weight: 600; }
+        #highscores tr:hover { background: #f8f9ff; }
+        .highlight-row { background: #d4edda !important; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Number Memory</h1>
+        <div class="top-bar">
+            <div class="mode-tabs">
+                <button id="modeClassic" class="active">Classic</button>
+                <button id="modeTimed">Timed</button>
+            </div>
+            <div class="settings" id="settingsClassic">
+                <label for="digits">Digits:</label>
+                <input type="number" id="digits" value="10" min="1" max="100">
+            </div>
+            <div class="settings" id="settingsTimed" style="display:none;">
+                <label for="timeLimit">Seconds:</label>
+                <input type="number" id="timeLimit" value="10" min="1" max="300">
+            </div>
+        </div>
+        <div class="display-area">
+            <div id="display" class="number"></div>
+            <div id="comparison"></div>
+        </div>
+        <input type="text" id="userInput" placeholder="Type the number..." inputmode="numeric" autocomplete="off">
+        <button id="actionButton">Start</button>
+        <div id="timer"></div>
+        <p id="result"></p>
+        <hr>
+        <div id="highscores"></div>
+    </div>
+    
+    <script>
+        let startTime, endTime, randomNumber, timerInterval;
+        let mode = "classic"; // "classic" or "timed"
+        let timedDigitCount = 0;
+        const button = document.getElementById("actionButton");
+        const display = document.getElementById("display");
+        const userInput = document.getElementById("userInput");
+        const result = document.getElementById("result");
+        const digitsInput = document.getElementById("digits");
+        const timeLimitInput = document.getElementById("timeLimit");
+        const comparison = document.getElementById("comparison");
+        const highscoresDiv = document.getElementById("highscores");
+        const timerDiv = document.getElementById("timer");
+        const settingsClassic = document.getElementById("settingsClassic");
+        const settingsTimed = document.getElementById("settingsTimed");
+        const modeClassicBtn = document.getElementById("modeClassic");
+        const modeTimedBtn = document.getElementById("modeTimed");
+
+        modeClassicBtn.addEventListener("click", () => {
+            mode = "classic";
+            modeClassicBtn.classList.add("active");
+            modeTimedBtn.classList.remove("active");
+            settingsClassic.style.display = "flex";
+            settingsTimed.style.display = "none";
+            resetUI();
+            renderHighscores();
+        });
+        modeTimedBtn.addEventListener("click", () => {
+            mode = "timed";
+            modeTimedBtn.classList.add("active");
+            modeClassicBtn.classList.remove("active");
+            settingsTimed.style.display = "flex";
+            settingsClassic.style.display = "none";
+            resetUI();
+            renderHighscores();
+        });
+
+        function resetUI() {
+            clearInterval(timerInterval);
+            display.textContent = "";
+            comparison.innerHTML = "";
+            result.textContent = "";
+            timerDiv.textContent = "";
+            userInput.style.display = "none";
+            userInput.value = "";
+            button.textContent = "Start";
+        }
+
+        function formatNumber(num) {
+            // Split into groups of 5, arrange in rows of 5 groups (25 digits per row)
+            const groups = num.match(/.{1,5}/g) || [];
+            const rows = [];
+            for (let i = 0; i < groups.length; i += 5) {
+                rows.push(groups.slice(i, i + 5).join("  "));
+            }
+            return rows.join("\n");
+        }
+
+        function updateDisplaySize(len) {
+            if (len <= 20) display.style.fontSize = "2.4rem";
+            else if (len <= 40) display.style.fontSize = "1.8rem";
+            else display.style.fontSize = "1.3rem";
+            display.style.whiteSpace = "pre";
+            display.style.letterSpacing = "2px";
+        }
+
+        function generateRandomNumber(d) {
+            return Array.from({ length: d }, () => Math.floor(Math.random() * 10)).join("");
+        }
+
+        function buildComparison(expected, entered) {
+            let html = "";
+            for (let i = 0; i < expected.length; i++) {
+                if (i > 0 && i % 25 === 0) html += "<br>";
+                else if (i > 0 && i % 5 === 0) html += "&nbsp;&nbsp;";
+                if (i < entered.length && entered[i] === expected[i]) {
+                    html += `<span class="correct">${entered[i]}</span>`;
+                } else {
+                    const ch = i < entered.length ? entered[i] : "_";
+                    html += `<span class="wrong">${ch}</span>`;
+                }
+            }
+            return html;
+        }
+
+        function getHighscores(key) {
+            return JSON.parse(localStorage.getItem(key || "memoryHighscores") || "[]");
+        }
+
+        function saveHighscore(digits, time) {
+            const key = mode === "timed" ? "memoryHighscoresTimed" : "memoryHighscores";
+            const scores = getHighscores(key);
+            const entry = {
+                date: new Date().toLocaleDateString("de-DE"),
+                digits: digits,
+                time: parseFloat(time)
+            };
+            scores.push(entry);
+            scores.sort((a, b) => b.digits - a.digits || a.time - b.time);
+            localStorage.setItem(key, JSON.stringify(scores.slice(0, 30)));
+            renderHighscores(entry);
+        }
+
+        function renderHighscores(highlight) {
+            const key = mode === "timed" ? "memoryHighscoresTimed" : "memoryHighscores";
+            const scores = getHighscores(key);
+            const title = mode === "timed" ? "🏆 Highscores — ⏱ Timed" : "🏆 Highscores — 📋 Classic";
+            if (!scores.length) { highscoresDiv.innerHTML = ""; return; }
+            let html = `<h3>${title}</h3><table><tr><th>#</th><th>Date</th><th>Digits</th><th>Time (s)</th></tr>`;
+            let highlighted = false;
+            scores.forEach((s, i) => {
+                const isHL = highlight && !highlighted && s.date === highlight.date && s.digits === highlight.digits && s.time === highlight.time;
+                if (isHL) highlighted = true;
+                html += `<tr${isHL ? ' class="highlight-row"' : ""}><td>${i + 1}</td><td>${s.date}</td><td>${s.digits}</td><td>${s.time}</td></tr>`;
+            });
+            html += "</table>";
+            highscoresDiv.innerHTML = html;
+        }
+
+        renderHighscores();
+
+        // Timed mode: show all digits at once, countdown timer
+        function startTimedMode() {
+            const limit = parseInt(timeLimitInput.value) || 10;
+            randomNumber = generateRandomNumber(100);
+            updateDisplaySize(100);
+            display.textContent = formatNumber(randomNumber);
+            startTime = Date.now();
+            const endAt = startTime + limit * 1000;
+
+            timerInterval = setInterval(() => {
+                const remaining = Math.max(0, (endAt - Date.now()) / 1000);
+                timerDiv.textContent = remaining.toFixed(1) + "s left";
+                if (remaining <= 0) {
+                    clearInterval(timerInterval);
+                    endTime = Date.now();
+                    timerDiv.textContent = "Time's up! Recall as many as you can.";
+                    display.textContent = "";
+                    userInput.style.display = "block";
+                    userInput.focus();
+                    button.textContent = "Check";
+                }
+            }, 100);
+            button.textContent = "Stop";
+        }
+
+        button.addEventListener("click", () => {
+            if (button.textContent === "Start") {
+                result.textContent = "";
+                comparison.innerHTML = "";
+                timerDiv.textContent = "";
+                userInput.style.display = "none";
+                userInput.value = "";
+
+                if (mode === "timed") {
+                    startTimedMode();
+                } else {
+                    const d = parseInt(digitsInput.value) || 5;
+                    randomNumber = generateRandomNumber(d);
+                    updateDisplaySize(d);
+                    display.textContent = formatNumber(randomNumber);
+                    startTime = Date.now();
+                    timerDiv.textContent = "0.0s";
+                    timerInterval = setInterval(() => {
+                        timerDiv.textContent = ((Date.now() - startTime) / 1000).toFixed(1) + "s";
+                    }, 100);
+                    button.textContent = "Stop";
+                }
+            } else if (button.textContent === "Stop") {
+                if (mode === "timed") {
+                    clearInterval(timerInterval);
+                    endTime = Date.now();
+                    timerDiv.textContent = ((endTime - startTime) / 1000).toFixed(1) + "s used";
+                } else {
+                    clearInterval(timerInterval);
+                    endTime = Date.now();
+                    timerDiv.textContent = ((endTime - startTime) / 1000).toFixed(1) + "s";
+                }
+                display.textContent = "";
+                userInput.style.display = "block";
+                userInput.focus();
+                button.textContent = "Check";
+            } else if (button.textContent === "Check") {
+                const entered = userInput.value.replace(/[^0-9]/g, '');
+                const expected = mode === "timed" ? randomNumber.substring(0, entered.length) : randomNumber;
+                comparison.innerHTML = buildComparison(expected, entered);
+                comparison.style.fontSize = expected.length > 40 ? "1.1rem" : expected.length > 20 ? "1.5rem" : "2rem";
+                if (entered.length > 0 && entered === expected) {
+                    const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
+                    result.textContent = `✅ Correct! ${entered.length} digits in ${timeTaken}s`;
+                    saveHighscore(entered.length, timeTaken);
+                } else {
+                    result.textContent = "❌ Incorrect. See differences above.";
+                }
+                button.textContent = "Start";
+            }
+        });
+    </script>
+</body>
+</html>
