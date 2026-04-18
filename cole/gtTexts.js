@@ -9,7 +9,7 @@ const texts = [
 
     "The elementary abelian group \\(C_3\\times C_3\\) of order 9 is regular. It permutes the three rows and three columns cyclically and independently. God's number is 2, as can be checked easily.",
 
-    "In contrast to \\(C_3\\times C_3\\), the imprimitive group \\(S_3\\times S_3\\) realizes arbitrary permutations (not only cyclical) of the three rows and three columns. It has order \\((3!)^2=36\\) and god's number 6",
+    "In contrast to \\(C_3\\times C_3\\), the imprimitive group \\(S_3\\times S_3\\) realizes arbitrary permutations (not only cyclical) of the three rows and three columns. It has order \\((3!)^2=36\\) and God's number 6.",
 
     "The wreath product \\(C_3\\wr C_3\\cong C_3^3\\rtimes C_3\\) of order \\(3^4=81\\) is the unique smallest irregular 3-group (in this context, irregular has nothing to do with the action). The base group \\(C_3^4\\) allows permuting the three boxes in each row cyclically. The top factor \\(C_3\\) permutes the three rows as sets. God's number is 6.",
 
@@ -19,7 +19,7 @@ const texts = [
 
     "The affine semilinear group \\(\\mathrm{A\\Gamma L}(1,9)\\cong C_3^2\\rtimes D_{16}\\) of order 144 is an extension of \\(\\mathrm{AGL}(1,9)\\) by the group of Frobenius automorphisms \\(\\mathrm{Aut}(\\mathbb{F}_3^2)\\cong C_2\\) (note that \\(D_{16}\\cong C_8\\rtimes C_2\\)). God's number is 9.",
 
-    "The Mathieu group \\(M_9\\cong C_3^2\\rtimes Q_8\\) of order 72 is another sharply 2-transitiv extension of the regular group \\(C_3^2\\). It can be described as the derived subgroup of \\(\\mathrm{ASL}(2,3)\\) or as a stabilizer of the larger Mathieu group \\(M_{10}\\cong A_6.C_2\\), which in turn is a stabilizer of the smallest sporadic simple group \\(M_{11}\\). God's number is 5.",
+    "The Mathieu group \\(M_9\\cong C_3^2\\rtimes Q_8\\) of order 72 is another sharply 2-transitive extension of the regular group \\(C_3^2\\). It can be described as the derived subgroup of \\(\\mathrm{ASL}(2,3)\\) or as a stabilizer of the larger Mathieu group \\(M_{10}\\cong A_6.C_2\\), which in turn is a stabilizer of the smallest sporadic simple group \\(M_{11}\\). God's number is 5.",
 
     "The affine special linear group \\(\\mathrm{ASL}(2,3)\\cong C_3^2\\rtimes\\mathrm{SL}(2,3)\\) of order \\(9\\cdot 24=216\\) is an extension of the 2-dimensional \\(\\mathbb{F}_3\\)-vectorspace with the special linear group \\(\\mathrm{SL}(2,3)\\) acting by matrix-vector-multiplication. It is the derived group of \\(\\mathrm{AGL}(2,3)\\). God's number is 8.",
 
@@ -29,11 +29,11 @@ const texts = [
 
     "The special semilinear group \\(\\mathrm{\\Sigma L}(2,8)\\) of order 1512 is an extension of \\(\\mathrm{SL}(2,8)\\) by Frobenius automorphisms \\(\\mathrm{Aut}(\\mathbb{F}_8)\\cong C_3\\). God's number is 20 (just as for the Rubik's cube).",
 
-    "The alternating group \\(A_9\\) consists of the \\(9!/2=181{,}440\\) even permutations. It belongs to an infinite family of simple groups. God's number is 21. There is a exactly one scramble, which requires 21 moves. Find it!",
+    "The alternating group \\(A_9\\) consists of the \\(9!/2=181{,}440\\) even permutations. It belongs to an infinite family of simple groups. God's number is 21. There is exactly one scramble, which requires 21 moves. Find it!",
 
     "The full symmetric group \\(S_9\\) contains all \\(9!=362{,}880\\) permutations. Despite its size, there is a straight-forward algorithm to solve this puzzle. God's number is 37, and there is a unique scramble requiring 37 moves to solve.",
 
-    "The semidirect product \\(C_2^8\\rtimes S_9\\) of order \\[2^8\\cdot 9!=92{,}897{,}280\\] introduces rotations of invidual boxes. Each box can be rotated by \\(\\pi\\), but the sum of all box rotations must add up to 0 (modulo \\(2\\pi\\)). This is exactly the Coxeter group of Dynkin type \\(\\textup{D}_9\\). The base group \\(C_2^8\\) consists of those configurations where all boxes are at the right spot. To distinguish rotated boxes from one another, the background image cannot have any symmetries. A first step to solve this puzzle is to find a move sequence that rotates boxes, but does not permute them.",
+    "The semidirect product \\(C_2^8\\rtimes S_9\\) of order \\[2^8\\cdot 9!=92{,}897{,}280\\] introduces rotations of individual boxes. Each box can be rotated by \\(\\pi\\), but the sum of all box rotations must add up to 0 (modulo \\(2\\pi\\)). This is exactly the Coxeter group of Dynkin type \\(\\textup{D}_9\\). The base group \\(C_2^8\\) consists of those configurations where all boxes are at the right spot. To distinguish rotated boxes from one another, the background image cannot have any symmetries. A first step to solve this puzzle is to find a move sequence that rotates boxes, but does not permute them.",
 
     "The wreath product \\(C_2\\wr S_9\\) of order \\[2^9\\cdot 9!=185{,}794{,}560\\] allows rotating all boxes by \\(\\pi\\) independently. This is the Coxeter group of Dynkin type \\(\\textup{B}_9\\).",
 
