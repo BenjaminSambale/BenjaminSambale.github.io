@@ -47,22 +47,28 @@ function resetUI() {
     button.textContent = "Start";
 }
 
-function formatNumber(num) {
-    // Split into groups of 5, arrange in rows of 5 groups (25 digits per row)
+function displayGroupsPerRow() {
+    return window.innerWidth <= 480 ? 4 : 5;
+}
+
+function formatNumber(num, groupsPerRow) {
+    if (groupsPerRow === undefined) groupsPerRow = 5;
+    // Split into groups of 5 digits, arrange in rows of groupsPerRow groups
     const groups = num.match(/.{1,5}/g) || [];
     const rows = [];
-    for (let i = 0; i < groups.length; i += 5) {
-        rows.push(groups.slice(i, i + 5).join("  "));
+    for (let i = 0; i < groups.length; i += groupsPerRow) {
+        rows.push(groups.slice(i, i + groupsPerRow).join("  "));
     }
     return rows.join("\n");
 }
 
 function updateDisplaySize(len) {
-    if (len <= 20) display.style.fontSize = "2.4rem";
-    else if (len <= 40) display.style.fontSize = "1.8rem";
-    else display.style.fontSize = "1.3rem";
-    display.style.whiteSpace = "pre";
-    display.style.letterSpacing = "2px";
+    const narrow = window.innerWidth <= 480;
+    if (len <= 20) display.style.fontSize = narrow ? "1.6rem" : "2.4rem";
+    else if (len <= 40) display.style.fontSize = narrow ? "1.2rem" : "1.8rem";
+    else display.style.fontSize = narrow ? "0.95rem" : "1.3rem";
+    display.style.whiteSpace = "pre-wrap";
+    display.style.letterSpacing = narrow ? "1px" : "2px";
 }
 
 function generateRandomNumber(d) {
@@ -171,7 +177,7 @@ userInput.addEventListener("input", () => {
     // significant = digits or placeholders (non-space, non-newline)
     const sigBeforeCursor = userInput.value.slice(0, sel).replace(/[ \n]/g, "").length;
     const raw = userInput.value.replace(/[ \n]/g, "");
-    const formatted = formatNumber(raw);
+    const formatted = formatNumber(raw, displayGroupsPerRow());
     userInput.value = formatted;
     // restore cursor: skip past sigBeforeCursor significant chars
     let sig = 0, pos = formatted.length;
@@ -196,7 +202,7 @@ function startTimedMode() {
     const limit = parseInt(timeLimitInput.value) || 10;
     randomNumber = generateRandomNumber(100);
     updateDisplaySize(100);
-    display.textContent = formatNumber(randomNumber);
+    display.textContent = formatNumber(randomNumber, displayGroupsPerRow());
     startTime = Date.now();
     const endAt = startTime + limit * 1000;
 
@@ -232,7 +238,7 @@ button.addEventListener("click", () => {
             const d = parseInt(digitsInput.value) || 5;
             randomNumber = generateRandomNumber(d);
             updateDisplaySize(d);
-            display.textContent = formatNumber(randomNumber);
+            display.textContent = formatNumber(randomNumber, displayGroupsPerRow());
             startTime = Date.now();
             timerDiv.textContent = "0.0s";
             timerInterval = setInterval(() => {

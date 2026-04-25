@@ -64,8 +64,7 @@ h1 {
     border-color: #667eea;
 }
 .display-area {
-    height: 180px;
-    overflow: hidden;
+    min-height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,7 +73,7 @@ h1 {
     margin-bottom: 20px;
     padding: 16px;
 }
-.number { font-family: 'Courier New', monospace; color: #333; line-height: 1.6; user-select: none; }
+.number { font-family: 'Courier New', monospace; color: #333; line-height: 1.6; user-select: none; overflow-wrap: break-word; }
 #comparison { font-family: 'Courier New', monospace; letter-spacing: 2px; line-height: 1.6; }
 #userInput {
     width: 100%;
@@ -124,3 +123,53 @@ hr { border: none; border-top: 1px solid #eee; margin: 16px 0; }
 #highscores tr:hover { background: #f8f9ff; }
 .highlight-row { background: #d4edda !important; }
 .hidden { display: none; }
+
+@media (max-width: 480px) {
+    body {
+        padding: 16px 10px;
+    }
+    .container {
+        padding: 24px 16px;
+        border-radius: 14px;
+    }
+    h1 {
+        font-size: 1.4rem;
+        margin-bottom: 16px;
+    }
+    .top-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    .mode-tabs {
+        width: 100%;
+    }
+    .mode-tabs button {
+        flex: 1;
+        padding: 10px 0;
+        font-size: 0.9rem;
+    }
+    .settings {
+        justify-content: center;
+    }
+    .display-area {
+        min-height: 140px;
+        padding: 10px;
+    }
+    #userInput {
+        font-size: 1.1rem;
+        padding: 10px 12px;
+    }
+    #actionButton {
+        width: 100%;
+        font-size: 1.1rem;
+        padding: 14px;
+    }
+    #result {
+        font-size: 1rem;
+    }
+    #highscores th, #highscores td {
+        padding: 6px 6px;
+        font-size: 0.8rem;
+    }
+}
