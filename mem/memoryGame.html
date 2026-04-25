@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Number Memory</title>
+    <title>Mnemoria</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -71,7 +71,8 @@
             border-color: #667eea;
         }
         .display-area {
-            min-height: 80px;
+            height: 180px;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -84,17 +85,20 @@
         #comparison { font-family: 'Courier New', monospace; letter-spacing: 2px; line-height: 1.6; }
         #userInput {
             width: 100%;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             padding: 12px 16px;
             border: 2px solid #ddd;
             border-radius: 10px;
             text-align: center;
             font-family: 'Courier New', monospace;
-            letter-spacing: 2px;
+            line-height: 1.6;
             outline: none;
             transition: border-color 0.2s;
-            display: none;
+            visibility: hidden;
             margin-bottom: 20px;
+            resize: none;
+            overflow: hidden;
+            display: block;
         }
         #userInput:focus { border-color: #667eea; }
         #actionButton {
@@ -113,13 +117,12 @@
         #result {
             font-size: 1.2rem;
             margin-top: 16px;
-            min-height: 1.5em;
             font-weight: 600;
         }
         .correct { color: #28a745; }
         .wrong { color: #dc3545; font-weight: bold; }
-        #timer { font-size: 0.85rem; color: #aaa; margin-top: 8px; min-height: 1.2em; }
-        hr { border: none; border-top: 1px solid #eee; margin: 28px 0; }
+        #timer { font-size: 0.85rem; color: #aaa; margin-top: 8px; }
+        hr { border: none; border-top: 1px solid #eee; margin: 16px 0; }
         #highscores { text-align: center; }
         #highscores h3 { font-size: 1.2rem; color: #4a4a7a; margin-bottom: 12px; }
         #highscores table { width: 100%; border-collapse: collapse; }
@@ -131,7 +134,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>🧠 Number Memory</h1>
+        <h1>Mnemoria</h1>
         <div class="top-bar">
             <div class="mode-tabs">
                 <button id="modeClassic" class="active">Classic</button>
@@ -150,7 +153,7 @@
             <div id="display" class="number"></div>
             <div id="comparison"></div>
         </div>
-        <input type="text" id="userInput" placeholder="Type the number..." inputmode="numeric" autocomplete="off">
+        <textarea id="userInput" placeholder="Type the number…" inputmode="numeric" autocomplete="off" spellcheck="false"></textarea>
         <button id="actionButton">Start</button>
         <div id="timer"></div>
         <p id="result"></p>
@@ -201,8 +204,9 @@
             comparison.innerHTML = "";
             result.textContent = "";
             timerDiv.textContent = "";
-            userInput.style.display = "none";
+            userInput.style.visibility = "hidden";
             userInput.value = "";
+            userInput.style.height = "auto";
             button.textContent = "Start";
         }
 
@@ -236,8 +240,7 @@
                 if (i < entered.length && entered[i] === expected[i]) {
                     html += `<span class="correct">${entered[i]}</span>`;
                 } else {
-                    const ch = i < entered.length ? entered[i] : "_";
-                    html += `<span class="wrong">${ch}</span>`;
+                    html += `<span class="wrong">${expected[i]}</span>`;
                 }
             }
             return html;
@@ -279,6 +282,22 @@
 
         renderHighscores();
 
+        userInput.addEventListener("input", () => {
+            const raw = userInput.value.replace(/\D/g, "");
+            const formatted = formatNumber(raw);
+            userInput.value = formatted;
+            userInput.setSelectionRange(formatted.length, formatted.length);
+            userInput.style.height = "auto";
+            userInput.style.height = userInput.scrollHeight + "px";
+        });
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" && e.target !== userInput) button.click();
+        });
+        userInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") { e.preventDefault(); button.click(); }
+        });
+
         // Timed mode: show all digits at once, countdown timer
         function startTimedMode() {
             const limit = parseInt(timeLimitInput.value) || 10;
@@ -296,7 +315,8 @@
                     endTime = Date.now();
                     timerDiv.textContent = "Time's up! Recall as many as you can.";
                     display.textContent = "";
-                    userInput.style.display = "block";
+                    userInput.style.height = "auto";
+                    userInput.style.visibility = "visible";
                     userInput.focus();
                     button.textContent = "Check";
                 }
@@ -309,8 +329,9 @@
                 result.textContent = "";
                 comparison.innerHTML = "";
                 timerDiv.textContent = "";
-                userInput.style.display = "none";
+                userInput.style.visibility = "hidden";
                 userInput.value = "";
+                userInput.style.height = "auto";
 
                 if (mode === "timed") {
                     startTimedMode();
@@ -337,7 +358,8 @@
                     timerDiv.textContent = ((endTime - startTime) / 1000).toFixed(1) + "s";
                 }
                 display.textContent = "";
-                userInput.style.display = "block";
+                userInput.style.height = "auto";
+                userInput.style.visibility = "visible";
                 userInput.focus();
                 button.textContent = "Check";
             } else if (button.textContent === "Check") {
@@ -345,6 +367,7 @@
                 const expected = mode === "timed" ? randomNumber.substring(0, entered.length) : randomNumber;
                 comparison.innerHTML = buildComparison(expected, entered);
                 comparison.style.fontSize = expected.length > 40 ? "1.1rem" : expected.length > 20 ? "1.5rem" : "2rem";
+                console.log({ expected, entered });
                 if (entered.length > 0 && entered === expected) {
                     const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
                     result.textContent = `✅ Correct! ${entered.length} digits in ${timeTaken}s`;
