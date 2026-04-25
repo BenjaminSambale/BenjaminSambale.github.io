@@ -283,16 +283,25 @@
         renderHighscores();
 
         userInput.addEventListener("input", () => {
-            const raw = userInput.value.replace(/\D/g, "");
+            const sel = userInput.selectionStart;
+            // significant = digits or placeholders (non-space, non-newline)
+            const sigBeforeCursor = userInput.value.slice(0, sel).replace(/[ \n]/g, "").length;
+            const raw = userInput.value.replace(/[ \n]/g, "");
             const formatted = formatNumber(raw);
             userInput.value = formatted;
-            userInput.setSelectionRange(formatted.length, formatted.length);
+            // restore cursor: skip past sigBeforeCursor significant chars
+            let sig = 0, pos = formatted.length;
+            for (let i = 0; i < formatted.length; i++) {
+                if (sig === sigBeforeCursor) { pos = i; break; }
+                if (formatted[i] !== " " && formatted[i] !== "\n") sig++;
+            }
+            userInput.setSelectionRange(pos, pos);
             userInput.style.height = "auto";
             userInput.style.height = userInput.scrollHeight + "px";
         });
 
         document.addEventListener("keydown", (e) => {
-            if (e.key === "Enter" && e.target !== userInput) button.click();
+            if (e.key === "Enter" && e.target !== userInput) { e.preventDefault(); button.click(); }
         });
         userInput.addEventListener("keydown", (e) => {
             if (e.key === "Enter") { e.preventDefault(); button.click(); }
@@ -363,11 +372,10 @@
                 userInput.focus();
                 button.textContent = "Check";
             } else if (button.textContent === "Check") {
-                const entered = userInput.value.replace(/[^0-9]/g, '');
+                const entered = userInput.value.replace(/[ \n]/g, '');
                 const expected = mode === "timed" ? randomNumber.substring(0, entered.length) : randomNumber;
                 comparison.innerHTML = buildComparison(expected, entered);
                 comparison.style.fontSize = expected.length > 40 ? "1.1rem" : expected.length > 20 ? "1.5rem" : "2rem";
-                console.log({ expected, entered });
                 if (entered.length > 0 && entered === expected) {
                     const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
                     result.textContent = `✅ Correct! ${entered.length} digits in ${timeTaken}s`;
