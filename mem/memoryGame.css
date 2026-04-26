@@ -123,6 +123,18 @@ hr { border: none; border-top: 1px solid #eee; margin: 16px 0; }
 #highscores tr:hover { background: #f8f9ff; }
 .highlight-row { background: #d4edda !important; }
 .hidden { display: none; }
+.delete-score-btn {
+    background: none;
+    border: none;
+    color: #bbb;
+    font-size: 1rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+}
+.delete-score-btn:hover { color: #dc3545; background: #fff0f0; }
 
 @media (max-width: 480px) {
     body {

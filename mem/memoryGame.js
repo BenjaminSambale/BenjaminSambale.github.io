@@ -110,6 +110,13 @@ function getHighscores(key) {
     }
 }
 
+function deleteHighscore(key, index) {
+    const scores = getHighscores(key);
+    scores.splice(index, 1);
+    localStorage.setItem(key, JSON.stringify(scores));
+    renderHighscores();
+}
+
 function saveHighscore(digits, time) {
     const key = getHighscoreKey();
     const scores = getHighscores(key);
@@ -120,7 +127,7 @@ function saveHighscore(digits, time) {
     };
     scores.push(entry);
     scores.sort((a, b) => b.digits - a.digits || a.time - b.time);
-    localStorage.setItem(key, JSON.stringify(scores.slice(0, 30)));
+    localStorage.setItem(key, JSON.stringify(scores.slice(0, 20)));
     renderHighscores(entry);
 }
 
@@ -139,7 +146,7 @@ function renderHighscores(highlight) {
     const table = document.createElement("table");
     const thead = document.createElement("thead");
     const headerRow = document.createElement("tr");
-    ["#", "Date", "Digits", "Time (s)"].forEach(text => {
+    ["#", "Date", "Digits", "Time (s)", ""].forEach(text => {
         const th = document.createElement("th");
         th.textContent = text;
         headerRow.appendChild(th);
@@ -161,6 +168,13 @@ function renderHighscores(highlight) {
             td.textContent = val;
             tr.appendChild(td);
         });
+        const tdDel = document.createElement("td");
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "\u00d7";
+        delBtn.className = "delete-score-btn";
+        delBtn.addEventListener("click", () => deleteHighscore(key, i));
+        tdDel.appendChild(delBtn);
+        tr.appendChild(tdDel);
         tbody.appendChild(tr);
     });
     table.appendChild(tbody);
