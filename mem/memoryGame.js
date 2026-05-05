@@ -24,6 +24,7 @@ modeClassicBtn.addEventListener("click", () => {
     settingsTimed.classList.add("hidden");
     resetUI();
     renderHighscores();
+    saveSettings();
 });
 modeTimedBtn.addEventListener("click", () => {
     mode = "timed";
@@ -33,6 +34,7 @@ modeTimedBtn.addEventListener("click", () => {
     settingsClassic.classList.add("hidden");
     resetUI();
     renderHighscores();
+    saveSettings();
 });
 
 function resetUI() {
@@ -95,8 +97,33 @@ function buildComparison(expected, entered) {
     return fragment;
 }
 
-const HS_CLASSIC_KEY = "memoryHighscores";
-const HS_TIMED_KEY   = "memoryHighscoresTimed";
+const HS_CLASSIC_KEY  = "memoryHighscores";
+const HS_TIMED_KEY    = "memoryHighscoresTimed";
+const SETTINGS_KEY    = "memorySettings";
+
+function loadSettings() {
+    try {
+        const s = JSON.parse(localStorage.getItem(SETTINGS_KEY));
+        if (!s) return;
+        if (s.mode === "timed") {
+            mode = "timed";
+            modeTimedBtn.classList.add("active");
+            modeClassicBtn.classList.remove("active");
+            settingsTimed.classList.remove("hidden");
+            settingsClassic.classList.add("hidden");
+        }
+        if (s.digits != null) digitsInput.value = s.digits;
+        if (s.timeLimit != null) timeLimitInput.value = s.timeLimit;
+    } catch { /* ignore */ }
+}
+
+function saveSettings() {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify({
+        mode,
+        digits: digitsInput.value,
+        timeLimit: timeLimitInput.value
+    }));
+}
 
 function getHighscoreKey() {
     return mode === "timed" ? HS_TIMED_KEY : HS_CLASSIC_KEY;
@@ -184,6 +211,9 @@ function renderHighscores(highlight) {
     highscoresDiv.appendChild(container);
 }
 
+loadSettings();
+digitsInput.addEventListener("change", saveSettings);
+timeLimitInput.addEventListener("change", saveSettings);
 renderHighscores();
 
 userInput.addEventListener("input", () => {
