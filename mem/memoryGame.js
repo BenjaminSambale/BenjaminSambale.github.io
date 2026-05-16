@@ -73,6 +73,12 @@ function updateDisplaySize(len) {
     display.style.letterSpacing = narrow ? "1px" : "2px";
 }
 
+function formatTime(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+}
+
 function generateRandomNumber(d) {
     return Array.from({ length: d }, () => Math.floor(Math.random() * 10)).join("");
 }
@@ -252,7 +258,7 @@ function startTimedMode() {
 
     timerInterval = setInterval(() => {
         const remaining = Math.max(0, (endAt - Date.now()) / 1000);
-        timerDiv.textContent = remaining.toFixed(1) + "s left";
+        timerDiv.textContent = formatTime(remaining);
         if (remaining <= 0) {
             clearInterval(timerInterval);
             endTime = Date.now();
@@ -284,17 +290,17 @@ button.addEventListener("click", () => {
             updateDisplaySize(d);
             display.textContent = formatNumber(randomNumber, displayGroupsPerRow());
             startTime = Date.now();
-            timerDiv.textContent = "0.0s";
+            timerDiv.textContent = "00:00";
             timerInterval = setInterval(() => {
-                timerDiv.textContent = ((Date.now() - startTime) / 1000).toFixed(1) + "s";
+                timerDiv.textContent = formatTime((Date.now() - startTime) / 1000);
             }, 100);
             button.textContent = "Stop";
         }
     } else if (button.textContent === "Stop") {
         clearInterval(timerInterval);
         endTime = Date.now();
-        const elapsed = ((endTime - startTime) / 1000).toFixed(1);
-        timerDiv.textContent = mode === "timed" ? elapsed + "s used" : elapsed + "s";
+        const elapsed = (endTime - startTime) / 1000;
+        timerDiv.textContent = formatTime(elapsed);
         display.textContent = "";
         userInput.style.height = "auto";
         userInput.style.visibility = "visible";
