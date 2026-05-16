@@ -185,3 +185,10 @@ hr { border: none; border-top: 1px solid #eee; margin: 16px 0; }
         font-size: 0.8rem;
     }
 }
+
+.hint {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: #888;
+    text-align: center;
+}

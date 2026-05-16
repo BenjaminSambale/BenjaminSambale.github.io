@@ -74,6 +74,7 @@ function updateDisplaySize(len) {
 }
 
 function formatTime(seconds) {
+    if (seconds < 60) return parseFloat(seconds).toFixed(1) + "s";
     const m = Math.floor(seconds / 60);
     const s = Math.floor(seconds % 60);
     return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
@@ -179,7 +180,7 @@ function renderHighscores(highlight) {
     const table = document.createElement("table");
     const thead = document.createElement("thead");
     const headerRow = document.createElement("tr");
-    ["#", "Date", "Digits", "Time (s)", ""].forEach(text => {
+    ["#", "Date", "Digits", "Time", ""].forEach(text => {
         const th = document.createElement("th");
         th.textContent = text;
         headerRow.appendChild(th);
@@ -196,7 +197,7 @@ function renderHighscores(highlight) {
             s.digits === highlight.digits &&
             s.time === highlight.time;
         if (isHL) { tr.className = "highlight-row"; highlighted = true; }
-        [i + 1, s.date, s.digits, s.time].forEach(val => {
+        [i + 1, s.date, s.digits, formatTime(s.time)].forEach(val => {
             const td = document.createElement("td");
             td.textContent = val;
             tr.appendChild(td);
@@ -313,8 +314,8 @@ button.addEventListener("click", () => {
         comparison.appendChild(buildComparison(expected, entered));
         comparison.style.fontSize = expected.length > 40 ? "1.1rem" : expected.length > 20 ? "1.5rem" : "2rem";
         if (entered.length > 0 && entered === expected) {
-            const timeTaken = ((endTime - startTime) / 1000).toFixed(2);
-            result.textContent = "\u2705 Correct! " + entered.length + " digits in " + timeTaken + "s";
+            const timeTaken = (endTime - startTime) / 1000;
+            result.textContent = "\u2705 Correct! " + entered.length + " digits in " + formatTime(timeTaken);
             saveHighscore(entered.length, timeTaken);
         } else {
             result.textContent = "\u274C Incorrect. See differences above.";
