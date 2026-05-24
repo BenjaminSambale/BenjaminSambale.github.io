@@ -9,7 +9,6 @@ const groups = {
     random: 20,
     custom: 21
 }
-const comboMessage = "Enter a move combination";
 const defineButtonMessage = "Define the button first (see instructions)";
 const alreadySolvedMessage = "already solved";
 /**
@@ -85,7 +84,7 @@ renderGrid();
 
 document.querySelectorAll('#groupSelect p').forEach(p => {
     p.addEventListener('click', () => {
-        group = p.id;
+        group = Number(p.id);
         group != groups.D8wrS9 && (gens[group][2] = undefined); // reset combo move
         document.querySelectorAll('#groupSelect p').forEach(n => n.classList.remove('active'))
         p.classList.add('active');
@@ -243,16 +242,16 @@ submitCombo.addEventListener('click', () => {
         switch (c) {
             case 'L':
                 // reflections do not matter in this mode
-                [newPerm, newRot, _] = performMove(gens[group][0], false, newPerm, newRot);
+                [newPerm, newRot] = performMove(gens[group][0], false, newPerm, newRot);
                 break;
             case "L'":
-                [newPerm, newRot, _] = performMove(gens[group][0], true, newPerm, newRot);
+                [newPerm, newRot] = performMove(gens[group][0], true, newPerm, newRot);
                 break;
             case 'R':
-                [newPerm, newRot, _] = performMove(gens[group][1], false, newPerm, newRot);
+                [newPerm, newRot] = performMove(gens[group][1], false, newPerm, newRot);
                 break;
             case "R'":
-                [newPerm, newRot, _] = performMove(gens[group][1], true, newPerm, newRot);
+                [newPerm, newRot] = performMove(gens[group][1], true, newPerm, newRot);
         }
     });
     // undo the final permutation on newRot

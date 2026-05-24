@@ -10,7 +10,6 @@
   --button-color: var(--nav-background);
   --border-color: black;
   --solution-color: hsl(120, 100%, 30%);
-  --panel-size: 300px;
 }
 
 /* Overwriting the default from user agent stylesheet */
@@ -86,7 +85,6 @@ h1, h2, h3 {
 #patternGrid {
   display: flex;
   flex-direction: row;
-  align-items: space-around;
   gap: 10px;
 }
 
@@ -122,7 +120,7 @@ h1, h2, h3 {
   height: calc(300px + var(--gap)*2);
   gap: var(--gap);
   background-color: var(--border-color);
-  border: solid 4px var(--border-color)
+  border: solid 4px var(--border-color);
 }
 .tile {
   background-size: 300% 300%;
@@ -241,7 +239,7 @@ dialog::backdrop {
 .accordion:hover {
   background-color: var(--nav-hover)
 }
-.accordion:before {
+.accordion::before {
   content: "";
   width: 1em;
   height: 1em;
@@ -249,7 +247,7 @@ dialog::backdrop {
   margin-right: 5px;
   background: url('buttons/chevron-down.svg');
 }
-.active:before {
+.active::before {
   background: url('buttons/chevron-up.svg');
 }
 
