@@ -78,7 +78,23 @@ const towerPattern = document.getElementById('tower');
 const comboValidation = document.getElementById('comboValidation');
 const leftValidation = document.getElementById('leftValidation');
 const rightValidation = document.getElementById('rightValidation');
+const bestSolveDisplay = document.getElementById('bestSolve');
 
+function bestSolveKey() {
+    return `cole-best-solve-${group}`;
+}
+
+function loadBestSolve() {
+    const stored = localStorage.getItem(bestSolveKey());
+    if (stored) {
+        const { date, moves } = JSON.parse(stored);
+        bestSolveDisplay.textContent = `Solved  in ${moves} move${moves === 1 ? '' : 's'} (${date})`;
+    } else {
+        bestSolveDisplay.textContent = 'Never solved';
+    }
+}
+
+loadBestSolve();
 gtText.innerHTML = texts[group];
 renderMathInElement(gtText);
 createTiles();
@@ -324,6 +340,7 @@ function initialize() {
     rotations = initialArray.slice();
     reflections = initialArray.slice();
     gameStarted = false;
+    loadBestSolve();
     renderGrid();
 }
 
@@ -442,6 +459,17 @@ function processStep() {
         warningMessage.classList.add('winning');
         warningDialog.showModal();
         gameStarted = false;
+        const stored = localStorage.getItem(bestSolveKey());
+        const best = stored ? JSON.parse(stored) : null;
+        if (!best || moveCount < best.moves) {
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = String(now.getFullYear()).slice(-2);
+            const date = `${day}.${month}.${year}`;
+            localStorage.setItem(bestSolveKey(), JSON.stringify({ date, moves: moveCount }));
+            bestSolveDisplay.textContent = `Solve on ${date} in ${moveCount} move${moveCount === 1 ? '' : 's'}`;
+        }
     }
 }
 

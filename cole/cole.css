@@ -209,17 +209,30 @@ dialog::backdrop {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 10px;
+  column-gap: 10px;
+  row-gap: 0;
   padding-left: 10px;
+  flex-wrap: wrap;
 }
 
 #statusArea p {
   margin-top: -8px;
+  margin-bottom: 4px;
   line-height: 1.8;
+}
+
+#statusArea p:last-child {
+  flex-basis: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 #solution {
   color: var(--solution-color);
+}
+
+#bestSolve {
+  font-style: italic;
 }
 
 .winning {
