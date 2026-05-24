@@ -8,9 +8,10 @@ const groups = {
     D8wrS9: 19,
     random: 20,
     custom: 21
-}
-const defineButtonMessage = "Define the button first (see instructions)";
-const alreadySolvedMessage = "already solved";
+};
+const defineButtonMessage = 'Define the button first (see instructions)';
+const alreadySolvedMessage = 'already solved';
+const solvedSentinel = 'solved';
 /**
  * Current permutation of the boxes
  */
@@ -48,69 +49,68 @@ let leftInputString = '';
 let rightInputString = '';
 
 /* HTML elements */
-const playArea = document.getElementById("playArea");
+const playArea = document.getElementById('playArea');
 const tiles = [];
-const btnLeft = document.getElementById("btnLeft")
-const btnRight = document.getElementById("btnRight")
-const btnMiddle = document.getElementById("btnMiddle")
-const btnScramble = document.getElementById("btnScramble")
-const btnRestore = document.getElementById("btnRestore")
-const btnSolve = document.getElementById("btnSolve")
-const moveCounter = document.getElementById("moveCount");
-const showSolution = document.getElementById("solution");
-const comboInput = document.getElementById("comboInput");
-const comboDialog = document.getElementById("comboDialog");
-const submitCombo = document.getElementById("submitCombo");
-const cancelComboSubmit = document.getElementById("cancelComboSubmit");
-const customDialog = document.getElementById("customDialog");
-const leftInput = document.getElementById("leftInput");
-const rightInput = document.getElementById("rightInput");
-const submitPerms = document.getElementById("submitPerms");
-const cancelPermSubmit = document.getElementById("cancelPermSubmit");
-const warningDialog = document.getElementById("warningDialog");
-const warningMessage = document.getElementById("warningMessage");
-const acc = document.getElementsByClassName("accordion");
-const gtText = document.getElementById("gtText");
-const squaresPattern = document.getElementById("squares");
-const keypadPattern = document.getElementById("keypad");
-const towerPattern = document.getElementById("tower");
-const comboValidation = document.getElementById("comboValidation");
-const leftValidation = document.getElementById("leftValidation");
-const rightValidation = document.getElementById("rightValidation");
+const btnLeft = document.getElementById('btnLeft');
+const btnRight = document.getElementById('btnRight');
+const btnMiddle = document.getElementById('btnMiddle');
+const btnScramble = document.getElementById('btnScramble');
+const btnRestore = document.getElementById('btnRestore');
+const btnSolve = document.getElementById('btnSolve');
+const moveCounter = document.getElementById('moveCount');
+const showSolution = document.getElementById('solution');
+const comboInput = document.getElementById('comboInput');
+const comboDialog = document.getElementById('comboDialog');
+const submitCombo = document.getElementById('submitCombo');
+const cancelComboSubmit = document.getElementById('cancelComboSubmit');
+const customDialog = document.getElementById('customDialog');
+const leftInput = document.getElementById('leftInput');
+const rightInput = document.getElementById('rightInput');
+const submitPerms = document.getElementById('submitPerms');
+const cancelPermSubmit = document.getElementById('cancelPermSubmit');
+const warningDialog = document.getElementById('warningDialog');
+const warningMessage = document.getElementById('warningMessage');
+const acc = document.getElementsByClassName('accordion');
+const gtText = document.getElementById('gtText');
+const squaresPattern = document.getElementById('squares');
+const keypadPattern = document.getElementById('keypad');
+const towerPattern = document.getElementById('tower');
+const comboValidation = document.getElementById('comboValidation');
+const leftValidation = document.getElementById('leftValidation');
+const rightValidation = document.getElementById('rightValidation');
 
 gtText.innerHTML = texts[group];
 renderMathInElement(gtText);
 createTiles();
 renderGrid();
 
-document.querySelectorAll('#groupSelect p').forEach(p => {
-    p.addEventListener('click', () => {
-        group = Number(p.id);
-        group != groups.D8wrS9 && (gens[group][2] = undefined); // reset combo move
-        document.querySelectorAll('#groupSelect p').forEach(n => n.classList.remove('active'))
-        p.classList.add('active');
-        btnLeft.src = `buttons/b-${String(group * 2 + 1).padStart(2, '0')}.png`;
-        btnRight.src = `buttons/b-${String(group * 2 + 2).padStart(2, '0')}.png`;
-        btnMiddle.src = (group == groups.D8wrS9) ? `buttons/reflect.png` : `buttons/joker.png`;
-        gtText.innerHTML = texts[group];
-        renderMathInElement(gtText);
-        btnSolve.disabled = (group >= groups.A9);
-        btnSolve.style.cursor = (group >= groups.A9) ? 'auto' : 'pointer';
-        const withRotations = [groups.C8S9, groups.C9S9, groups.D8wrS9].includes(group);
-        squaresPattern.disabled = withRotations;
-        keypadPattern.disabled = withRotations;
-        if (withRotations && (squaresPattern.checked || keypadPattern.checked)) {
-            towerPattern.checked = true;
-        }
-        initialize();
-        if (group == groups.random) { // define random buttons
-            gens[group][0] = shuffle()
-            gens[group][1] = shuffle()
-        }
-        if (group == groups.custom) { // define custom buttons
-            customDialog.showModal();
-        }
-    });
+document.getElementById('groupSelect').addEventListener('click', e => {
+    const p = e.target.closest('p');
+    if (!p) return;
+    group = Number(p.id);
+    group !== groups.D8wrS9 && (gens[group][2] = undefined); // reset combo move
+    document.querySelectorAll('#groupSelect p').forEach(n => n.classList.remove('active'));
+    p.classList.add('active');
+    btnLeft.src = `buttons/b-${String(group * 2 + 1).padStart(2, '0')}.png`;
+    btnRight.src = `buttons/b-${String(group * 2 + 2).padStart(2, '0')}.png`;
+    btnMiddle.src = (group === groups.D8wrS9) ? 'buttons/reflect.png' : 'buttons/joker.png';
+    gtText.innerHTML = texts[group];
+    renderMathInElement(gtText);
+    btnSolve.disabled = (group >= groups.A9);
+    const withRotations = [groups.C8S9, groups.C9S9, groups.D8wrS9].includes(group);
+    squaresPattern.disabled = withRotations;
+    keypadPattern.disabled = withRotations;
+    if (withRotations && (squaresPattern.checked || keypadPattern.checked)) {
+        towerPattern.checked = true;
+    }
+    initialize();
+    if (group === groups.random) { // define random buttons
+        gens[group][0] = shuffle();
+        gens[group][1] = shuffle();
+    }
+    if (group === groups.custom) { // define custom buttons
+        customDialog.showModal();
+    }
 });
 
 leftInput.addEventListener('input', () => {
@@ -151,11 +151,11 @@ customDialog.addEventListener('keydown', e => {
     }
 });
 
-btnScramble.addEventListener("click", () => {
+btnScramble.addEventListener('click', () => {
     initialize();
     if (!gens[group][0]) { return; } // if custom mode was aborted
     if (group >= groups.A9) { // no explicit elements stored for large groups
-        const noBtn = group == groups.D8wrS9 ? 3 : 2;
+        const noBtn = group === groups.D8wrS9 ? 3 : 2;
         for (let i = 0; i < 30; i++) { // perform 30 random button clicks
             const move = gens[group][randInt(noBtn)];
             [perm, rotations, reflections] = performMove(move);
@@ -169,14 +169,14 @@ btnScramble.addEventListener("click", () => {
     renderGrid();
 });
 
-btnRestore.addEventListener("click", () => {
+btnRestore.addEventListener('click', () => {
     initialize();
 });
 
-btnSolve.addEventListener("click", () => {
-    solution = elements[group].find(s => s[0].every((x, i) => perm[x] == i))?.[1] ?? 'solved';
+btnSolve.addEventListener('click', () => {
+    solution = elements[group].find(s => s[0].every((x, i) => perm[x] === i))?.[1] ?? solvedSentinel;
     gameStarted = false;
-    renderGrid()
+    renderGrid();
 });
 
 document.querySelectorAll('input[name="pattern"]').forEach(radio => {
@@ -186,23 +186,23 @@ document.querySelectorAll('input[name="pattern"]').forEach(radio => {
 });
 
 [btnLeft, btnRight].forEach((btn, index) => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener('click', () => {
         const move = gens[group][index];
         if (!move) {
             customDialog.showModal();
             return;
         }
         [perm, rotations, reflections] = performMove(move);
-        processStep()
+        processStep();
     });
-    btn.addEventListener("contextmenu", (event) => { // right button click
-        event.preventDefault() // disable context menu
+    btn.addEventListener('contextmenu', (event) => { // right button click
+        event.preventDefault(); // disable context menu
         rightClickButton(index);
     });
 });
 
-btnMiddle.addEventListener("click", () => {
-    if (group == groups.D8wrS9) {
+btnMiddle.addEventListener('click', () => {
+    if (group === groups.D8wrS9) {
         reflections[4] = 1 - reflections[4];
     }
     else {
@@ -218,8 +218,8 @@ btnMiddle.addEventListener("click", () => {
     processStep();
 });
 
-btnMiddle.addEventListener("contextmenu", (event) => {
-    event.preventDefault() // disable context menu
+btnMiddle.addEventListener('contextmenu', (event) => {
+    event.preventDefault(); // disable context menu
     rightClickButton(2);
 });
 
@@ -297,18 +297,19 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-Array.from(acc).forEach(item => {
-    item.addEventListener("click", function () {
-        Array.from(acc).forEach(other => {
+const accArr = Array.from(acc);
+accArr.forEach(item => {
+    item.addEventListener('click', function () {
+        accArr.forEach(other => {
             if (other !== this) {
-                other.classList.remove("active");
-                let otherPanel = other.nextElementSibling;
-                otherPanel.classList.remove("open");
+                other.classList.remove('active');
+                const otherPanel = other.nextElementSibling;
+                otherPanel.classList.remove('open');
             }
         });
-        this.classList.toggle("active");
-        let panel = this.nextElementSibling;
-        panel.classList.toggle("open");
+        this.classList.toggle('active');
+        const panel = this.nextElementSibling;
+        panel.classList.toggle('open');
     });
 });
 
@@ -333,8 +334,8 @@ function createTiles() {
     playArea.innerHTML = "";
     tiles.length = 0;
     for (let i = 0; i < 9; i++) {
-        const tile = document.createElement("div");
-        tile.className = "tile";
+        const tile = document.createElement('div');
+        tile.className = 'tile';
         playArea.appendChild(tile);
         tiles.push(tile);
     }
@@ -353,8 +354,8 @@ function renderGrid() {
         tiles[i].style.transform = `rotate(${rotations[i] * 90}deg)`;
         tiles[i].style.transform += reflections[i] ? ' scaleX(-1)' : '';
     });
-    moveCounter.textContent = `${moveCount}`
-    showSolution.textContent = solution === "solved" ? alreadySolvedMessage : `\\(${solution}\\)`;
+    moveCounter.textContent = `${moveCount}`;
+    showSolution.textContent = solution === solvedSentinel ? alreadySolvedMessage : `\\(${solution}\\)`;
     renderMathInElement(showSolution);
 }
 
@@ -372,7 +373,7 @@ function performMove(move, inverse = false, basePerm = perm, baseRot = rotations
     let newRot = baseRot.slice();
     let newRef = baseRef.slice();
     if (!inverse) {
-        if (move[9] == -1) {
+        if (move[9] === -1) {
             newRef[4] = 1 - baseRef[4];
         }
         else {
@@ -385,10 +386,11 @@ function performMove(move, inverse = false, basePerm = perm, baseRot = rotations
         newRef = move.slice(0, 9).map(i => newRef[i]);
     }
     else {
-        newPerm = startPerm.map(i => newPerm[move.indexOf(i)]);
-        newRot = startPerm.map(i => newRot[move.indexOf(i)]);
-        newRef = startPerm.map(i => newRef[move.indexOf(i)]);
-        if (move[9] == -1) {
+        const inv = startPerm.map(i => move.indexOf(i));
+        newPerm = startPerm.map(i => newPerm[inv[i]]);
+        newRot = startPerm.map(i => newRot[inv[i]]);
+        newRef = startPerm.map(i => newRef[inv[i]]);
+        if (move[9] === -1) {
             newRef[4] = 1 - newRef[4];
         }
         else {
@@ -405,8 +407,8 @@ function performMove(move, inverse = false, basePerm = perm, baseRot = rotations
  * @param {number} index 
  */
 function rightClickButton(index) {
-    if (index == 2) {
-        if (group != groups.D8wrS9) {
+    if (index === 2) {
+        if (group !== groups.D8wrS9) {
             if (!gens[group][0]) { // custom mode aborted
                 customDialog.showModal();
             }
@@ -422,12 +424,12 @@ function rightClickButton(index) {
     }
     const move = gens[group][index];
     if (!move) {
-            customDialog.showModal();
-            return;
-        }
+        customDialog.showModal();
+        return;
+    }
     [perm, rotations, reflections] = performMove(move, true);
     processStep();
-};
+}
 
 /**
  * Processes a step after a move has been made, updating the move count and checking for a win.
@@ -436,7 +438,7 @@ function processStep() {
     moveCount++;
     renderGrid();
     if (gameStarted && perm.every((v, i) => v === startPerm[i]) && rotations.every(v => v === 0) && reflections.every(v => v === 0)) {
-        warningMessage.textContent = moveCount == 1 ? `Solved in ${moveCount} move!` : `Solved in ${moveCount} moves!`;
+        warningMessage.textContent = moveCount === 1 ? `Solved in ${moveCount} move!` : `Solved in ${moveCount} moves!`;
         warningMessage.classList.add('winning');
         warningDialog.showModal();
         gameStarted = false;
