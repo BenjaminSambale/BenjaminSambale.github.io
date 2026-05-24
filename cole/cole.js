@@ -49,7 +49,7 @@ let rightInputString = '';
 
 /* HTML elements */
 const playArea = document.getElementById("playArea");
-const groupSelect = document.getElementById("groupSelect");
+const tiles = [];
 const btnLeft = document.getElementById("btnLeft")
 const btnRight = document.getElementById("btnRight")
 const btnMiddle = document.getElementById("btnMiddle")
@@ -80,6 +80,7 @@ const rightValidation = document.getElementById("rightValidation");
 
 gtText.innerHTML = texts[group];
 renderMathInElement(gtText);
+createTiles();
 renderGrid();
 
 document.querySelectorAll('#groupSelect p').forEach(p => {
@@ -95,7 +96,7 @@ document.querySelectorAll('#groupSelect p').forEach(p => {
         renderMathInElement(gtText);
         btnSolve.disabled = (group >= groups.A9);
         btnSolve.style.cursor = (group >= groups.A9) ? 'auto' : 'pointer';
-        const withRotations = [groups.C8S9, groups.C9S9, groups.D8wrS9].includes(Number(group));
+        const withRotations = [groups.C8S9, groups.C9S9, groups.D8wrS9].includes(group);
         squaresPattern.disabled = withRotations;
         keypadPattern.disabled = withRotations;
         if (withRotations && (squaresPattern.checked || keypadPattern.checked)) {
@@ -155,7 +156,7 @@ btnScramble.addEventListener("click", () => {
     if (!gens[group][0]) { return; } // if custom mode was aborted
     if (group >= groups.A9) { // no explicit elements stored for large groups
         const noBtn = group == groups.D8wrS9 ? 3 : 2;
-        for (const _ of Array(30)) { // perform 30 random button clicks           
+        for (let i = 0; i < 30; i++) { // perform 30 random button clicks
             const move = gens[group][randInt(noBtn)];
             [perm, rotations, reflections] = performMove(move);
         }
@@ -326,21 +327,31 @@ function initialize() {
 }
 
 /**
+ * Creates the 9 tile elements once and appends them to the play area.
+ */
+function createTiles() {
+    playArea.innerHTML = "";
+    tiles.length = 0;
+    for (let i = 0; i < 9; i++) {
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        playArea.appendChild(tile);
+        tiles.push(tile);
+    }
+}
+
+/**
  * Renders the grid based on the current states of perm, rotation, and reflections.
  */
 function renderGrid() {
     const pattern = document.querySelector('input[name="pattern"]:checked').value;
-    playArea.innerHTML = "";
     perm.forEach((p, i) => {
         const x = (p % 3) * 50;
         const y = Math.floor(p / 3) * 50;
-        const tile = document.createElement("div");
-        tile.className = "tile";
-        tile.style.backgroundImage = `url(${pattern})`;
-        tile.style.backgroundPosition = `${x}% ${y}%`;
-        tile.style.transform = `rotate(${rotations[i] * 90}deg)`;
-        tile.style.transform += reflections[i] ? ' scaleX(-1)' : '';
-        playArea.appendChild(tile);
+        tiles[i].style.backgroundImage = `url(${pattern})`;
+        tiles[i].style.backgroundPosition = `${x}% ${y}%`;
+        tiles[i].style.transform = `rotate(${rotations[i] * 90}deg)`;
+        tiles[i].style.transform += reflections[i] ? ' scaleX(-1)' : '';
     });
     moveCounter.textContent = `${moveCount}`
     showSolution.textContent = solution === "solved" ? alreadySolvedMessage : `\\(${solution}\\)`;
