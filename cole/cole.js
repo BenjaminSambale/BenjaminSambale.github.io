@@ -84,11 +84,15 @@ function bestSolveKey() {
     return `cole-best-solve-${group}`;
 }
 
+function bestSolveText(moves, date) {
+    return `Solved in ${moves} move${moves === 1 ? '' : 's'} (${date})`;
+}
+
 function loadBestSolve() {
     const stored = localStorage.getItem(bestSolveKey());
     if (stored) {
         const { date, moves } = JSON.parse(stored);
-        bestSolveDisplay.textContent = `Solved  in ${moves} move${moves === 1 ? '' : 's'} (${date})`;
+        bestSolveDisplay.textContent = bestSolveText(moves, date);
     } else {
         bestSolveDisplay.textContent = 'Never solved';
     }
@@ -455,7 +459,7 @@ function processStep() {
     moveCount++;
     renderGrid();
     if (gameStarted && perm.every((v, i) => v === startPerm[i]) && rotations.every(v => v === 0) && reflections.every(v => v === 0)) {
-        warningMessage.textContent = moveCount === 1 ? `Solved in ${moveCount} move!` : `Solved in ${moveCount} moves!`;
+        warningMessage.textContent = `Solved in ${moveCount} move${moveCount === 1 ? '' : 's'}!`;
         warningMessage.classList.add('winning');
         warningDialog.showModal();
         gameStarted = false;
@@ -468,7 +472,7 @@ function processStep() {
             const year = String(now.getFullYear()).slice(-2);
             const date = `${day}.${month}.${year}`;
             localStorage.setItem(bestSolveKey(), JSON.stringify({ date, moves: moveCount }));
-            bestSolveDisplay.textContent = `Solve on ${date} in ${moveCount} move${moveCount === 1 ? '' : 's'}`;
+            bestSolveDisplay.textContent = bestSolveText(moveCount, date);
         }
     }
 }
