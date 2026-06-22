@@ -32,6 +32,36 @@ h1 {
   gap: 8px;
 }
 
+/* Hamburger button (hidden on desktop) */
+.hamburger {
+  display: none;
+  position: fixed;
+  top: 6px;
+  left: 6px;
+  z-index: 300;
+  background: var(--nav-background);
+  border: none;
+  font-size: 22px;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+  border-radius: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 150;
+}
+
+.nav-overlay.open {
+  display: block;
+}
+
 /* Sidebar navigation */
 .sidenav {
   height: 100%;
@@ -39,6 +69,7 @@ h1 {
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 200;
   background-color: var(--nav-background);
   overflow-x: hidden;
 }
@@ -221,4 +252,36 @@ td img {
 
 .nav-btn:hover {
   background: var(--nav-hover);
+}
+
+/* Mobile layout */
+@media (max-width: 640px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .sidenav {
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    padding-top: 50px;
+  }
+
+  .sidenav.open {
+    transform: translateX(0);
+  }
+
+  iframe {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .topnav {
+    overflow-x: auto;
+  }
+
+  .topnav a {
+    white-space: nowrap;
+    font-size: 16px;
+    padding: 0 14px;
+  }
 }
