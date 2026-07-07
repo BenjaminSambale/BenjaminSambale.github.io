@@ -49,19 +49,10 @@ function resetUI() {
     button.textContent = "Start";
 }
 
-function displayGroupsPerRow() {
-    return window.innerWidth <= 480 ? 4 : 5;
-}
-
-function formatNumber(num, groupsPerRow) {
-    if (groupsPerRow === undefined) groupsPerRow = 5;
-    // Split into groups of 5 digits, arrange in rows of groupsPerRow groups
+function formatNumber(num) {
+    // Split into groups of 5 digits; let the browser wrap naturally between groups
     const groups = num.match(/.{1,5}/g) || [];
-    const rows = [];
-    for (let i = 0; i < groups.length; i += groupsPerRow) {
-        rows.push(groups.slice(i, i + groupsPerRow).join("  "));
-    }
-    return rows.join("\n");
+    return groups.join("  ");
 }
 
 function updateDisplaySize(len) {
@@ -87,10 +78,8 @@ function generateRandomNumber(d) {
 function buildComparison(expected, entered) {
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < expected.length; i++) {
-        if (i > 0 && i % 25 === 0) {
-            fragment.appendChild(document.createElement("br"));
-        } else if (i > 0 && i % 5 === 0) {
-            fragment.appendChild(document.createTextNode("\u00a0\u00a0"));
+        if (i > 0 && i % 5 === 0) {
+            fragment.appendChild(document.createTextNode("\u00a0 "));
         }
         const span = document.createElement("span");
         span.textContent = expected[i];
@@ -228,7 +217,7 @@ userInput.addEventListener("input", () => {
     // significant = digits or placeholders (non-space, non-newline)
     const sigBeforeCursor = userInput.value.slice(0, sel).replace(/[ \n]/g, "").length;
     const raw = userInput.value.replace(/[ \n]/g, "");
-    const formatted = formatNumber(raw, displayGroupsPerRow());
+    const formatted = formatNumber(raw);
     userInput.value = formatted;
     // restore cursor: skip past sigBeforeCursor significant chars
     let sig = 0, pos = formatted.length;
@@ -253,7 +242,7 @@ function startTimedMode() {
     const limit = parseInt(timeLimitInput.value) || 10;
     randomNumber = generateRandomNumber(100);
     updateDisplaySize(100);
-    display.textContent = formatNumber(randomNumber, displayGroupsPerRow());
+    display.textContent = formatNumber(randomNumber);
     startTime = Date.now();
     const endAt = startTime + limit * 1000;
 
@@ -289,7 +278,7 @@ button.addEventListener("click", () => {
             const d = parseInt(digitsInput.value) || 5;
             randomNumber = generateRandomNumber(d);
             updateDisplaySize(d);
-            display.textContent = formatNumber(randomNumber, displayGroupsPerRow());
+            display.textContent = formatNumber(randomNumber);
             startTime = Date.now();
             timerDiv.textContent = "00:00";
             timerInterval = setInterval(() => {
