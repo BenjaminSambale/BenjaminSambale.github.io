@@ -21,7 +21,7 @@ const texts = [
 
     "The Mathieu group \\(M_9\\cong C_3^2\\rtimes Q_8\\) of order 72 is another sharply 2-transitive extension of the regular group \\(C_3^2\\). It can be described as the derived subgroup of \\(\\mathrm{ASL}(2,3)\\) or as a stabilizer of the larger Mathieu group \\(M_{10}\\cong A_6.C_2\\), which in turn is a stabilizer of the smallest sporadic simple group \\(M_{11}\\). God's number is 5.",
 
-    "The affine special linear group \\(\\mathrm{ASL}(2,3)\\cong C_3^2\\rtimes\\mathrm{SL}(2,3)\\) of order \\(9\\cdot 24=216\\) is an extension of the 2-dimensional \\(\\mathbb{F}_3\\)-vectorspace with the special linear group \\(\\mathrm{SL}(2,3)\\) acting by matrix-vector-multiplication. It is the derived group of \\(\\mathrm{AGL}(2,3)\\). God's number is 8.",
+    "The affine special linear group \\(\\mathrm{ASL}(2,3)\\cong C_3^2\\rtimes\\mathrm{SL}(2,3)\\) of order \\(9\\cdot 24=216\\) is an extension of the 2-dimensional \\(\\mathbb{F}_3\\)-vectorspace with the special linear group \\(\\mathrm{SL}(2,3)\\) acting by matrix-vector-multiplication. It is the derived subgroup of \\(\\mathrm{AGL}(2,3)\\). God's number is 8.",
 
     "The group \\(\\mathrm{AGL}(2,3)\\cong C_3^2\\rtimes\\mathrm{GL}(2,3)\\) of order 432 is the universal solvable primitive group of degree 9 in the sense that every solvable primitive group embeds into \\(\\mathrm{AGL}(2,3).\\) God's number is 10.",
 
