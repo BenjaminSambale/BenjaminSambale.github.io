@@ -1,5 +1,5 @@
 #Mit Abbildung A.2 lassen sich die Erzeuger der Zauberwürfelgruppe leicht angeben. 
-#Siehe auch http://www.gap-system.org/Doc/Examples/rubik.html
+#Siehe auch https://www.gap-system.org/Doc/Examples/rubik.html
 
 G:=Group(
 ( 1, 3, 8, 6)( 2, 5, 7, 4)( 9,33,25,17)(10,34,26,18)(11,35,27,19),
