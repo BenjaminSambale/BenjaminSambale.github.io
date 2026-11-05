@@ -5,33 +5,103 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="referrer" content="no-referrer">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'self';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none';">
   <link rel="icon" href="favicon.ico">
   <link rel="stylesheet" href="style/main.css">
-  <script defer src="scripts/index.js"></script>
+  <link rel="stylesheet" href="katex/katex.min.css">
+  <script defer src="scripts/nav.js"></script>
+  <script defer src="katex/katex.min.js"></script>
+  <script defer src="katex/auto-render.min.js"></script>
+  <script defer src="scripts/renderKatex.js"></script>
   <title>Homepage of Benjamin Sambale</title>
-  <meta name="description" content="Mostly mathematical research articles and lecture notes. But also some prose and photos.">
+  <meta name="description" content="Benjamin Sambale, mathematician working on finite groups and their representations: research articles, lecture notes and talks. But also some prose and photos.">
   <meta name="author" content="Benjamin Sambale">
+  <link rel="canonical" href="https://benjaminsambale.github.io/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Benjamin Sambale",
+    "url": "https://benjaminsambale.github.io/",
+    "jobTitle": ["CISO", "Adjunct professor of mathematics"],
+    "worksFor": { "@type": "Organization", "name": "DAS", "url": "https://www.data-assessment.com" },
+    "affiliation": { "@type": "CollegeOrUniversity", "name": "Leibniz Universität Hannover", "url": "https://www.uni-hannover.de/" },
+    "knowsAbout": ["Finite groups", "Character theory", "Representation theory", "Block theory", "Fusion systems", "Permutation groups", "Cryptography"],
+    "sameAs": [
+      "https://orcid.org/0000-0001-9914-1652",
+      "https://scholar.google.com/citations?user=zN17jh8AAAAJ",
+      "https://www.ams.org/mathscinet/MRAuthorID/928720",
+      "https://zbmath.org/authors/?q=ai:sambale.benjamin",
+      "https://arxiv.org/search/?searchtype=author&query=Sambale%2C+B",
+      "https://www.linkedin.com/in/sambale/",
+      "https://github.com/BenjaminSambale"
+    ]
+  }
+  </script>
 </head>
 
-<body>
+<body class="subpage">
   <button class="hamburger" id="hamburger" aria-label="Toggle navigation">&#9776;</button>
   <div class="nav-overlay" id="nav-overlay"></div>
-  <div class="sidenav">
-    <a id="start" href="subpages/start.html" target="content" class="active">Start</a>
-    <a id="vita" href="subpages/cv.html" target="content">Vita</a>
-    <a id="interests" href="subpages/interests.html" target="content">Interests</a>
-    <a id="pub" href="subpages/pub.html" target="content">Publications</a>
-    <a id="teach" href="subpages/teach.html" target="content">Teaching</a>
-    <a id="writings" href="subpages/writings.html" target="content">Creative writings</a>
-    <a id="readings" href="subpages/readings.html" target="content">Readings</a>
-    <a id="photos" href="subpages/photos.html" target="content">Photos</a>
-    <a id="talks" href="subpages/talks.html" target="content">Talks</a>
-    <a id="coding" href="subpages/coding.html" target="content">Coding</a>
-    <a id="resources" href="subpages/resources.html" target="content">Useful links</a>
-  </div>
+  <nav class="sidenav">
+    <a href="index.html" class="active">Start</a>
+    <a href="subpages/cv.html">Vita</a>
+    <a href="subpages/interests.html">Interests</a>
+    <a href="subpages/pub.html">Publications</a>
+    <a href="subpages/teach.html">Teaching</a>
+    <a href="subpages/writings.html">Creative writings</a>
+    <a href="subpages/readings.html">Readings</a>
+    <a href="subpages/photos.html">Photos</a>
+    <a href="subpages/talks.html">Talks</a>
+    <a href="subpages/coding.html">Coding</a>
+    <a href="subpages/resources.html">Useful links</a>
+  </nav>
 
-  <iframe title="menu content" name="content" src="subpages/start.html" referrerpolicy="no-referrer" loading="lazy"></iframe>
+  <h1>Benjamin Sambale</h1>
+  <div class="startPage">
+    <div>
+      <h3>Welcome to my homepage!</h3>
+      <p>
+        I'm the CISO of <a href="https://www.data-assessment.com" target="_blank" rel="noopener noreferrer">DAS</a> and an adjunct professor of mathematics at <a href="https://www.iazd.uni-hannover.de/" target="_blank" rel="noopener noreferrer">LUH</a>.
+        Most content on this page is related to my research and teaching activities.
+      </p>
+      <p>Reach me at <a href="mailto:firstname.lastname@gmail.com">firstname.lastname@gmail.com</a> (my <a
+          href="sambale-gpg.asc" target="_blank" rel="noopener noreferrer">GPG key</a>) or <a href="https://www.linkedin.com/in/sambale/" target="_blank" rel="noopener noreferrer">LinkedIn</a></p>
+      <p>(I'm no longer available as a referee since academia isn't paying me.)</p>
+
+      <h3>News:</h3>
+      <ul>
+        <li>
+          A left-over question on pseudo Frobenius numbers has been solved by Claude <a href="pdfs/strongPseudoFrobenius.pdf" target="_blank" rel="noopener noreferrer">paper</a>
+        </li>
+        <li>
+          Claude has settled the problem of my diploma thesis from 2008: <a href="pdfs/kkinv.pdf" target="_blank" rel="noopener noreferrer">paper</a>
+        </li>
+        <li>
+          New <a href="pdfs/uniExtend.pdf" target="_blank" rel="noopener noreferrer">paper</a> on character extensions.
+        </li>
+
+        <li>
+          I won my age group at the <a href="https://my.raceresult.com/381281/results#1_2B9D33" target="_blank" rel="noopener noreferrer">Hannover Halfmarathon</a>.
+        </li>
+
+        <li>
+          New <a href="pdfs/gaComplete.pdf" target="_blank" rel="noopener noreferrer">paper</a> on Gaschütz's complement theorem with Stefanos Aivazidis.
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <img src="img/backflip.jpg" alt="backflip at Carmel river beach" width="450" height="374">
+    </div>
+  </div>
+  <a href="pdfs/bounding.pdf" target="_blank" rel="noopener noreferrer" title="see paper">
+    <div class="math">
+    \[ k(B)\le \Bigl(|\mathcal{N}|+\frac{|\langle u\rangle|-1}{|\mathcal{N}|}\Bigr)\textrm{tr}(WC)\le|\langle
+    u\rangle|\textrm{tr}(WC)\]
+  </div>
+</a>
+
 </body>
 
 </html>
