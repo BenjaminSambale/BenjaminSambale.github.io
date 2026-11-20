@@ -172,7 +172,7 @@ td img {
   height: 150px;
 }
 
-.vita-tab {
+.vita td:first-child {
   padding-right: 24px;
 }
 
